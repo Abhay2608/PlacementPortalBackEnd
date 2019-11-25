@@ -18,7 +18,7 @@ public class Company {
 	private Integer id;
 	private String name;
 	private CompanyContacts contact[];
-	private String jd[];
+	private String jd;
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private Date opentime;
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
@@ -45,10 +45,10 @@ public class Company {
 	public void setContact(CompanyContacts[] contact) {
 		this.contact = contact;
 	}
-	public String[] getJd() {
+	public String getJd() {
 		return jd;
 	}
-	public void setJd(String[] jd) {
+	public void setJd(String jd) {
 		this.jd = jd;
 	}
 	public Date getOpentime() {
