@@ -14,10 +14,10 @@ public class CompanyParticipation {
 	private Integer id;
 	private Integer companyId;
 	private Integer studentId;
-	private boolean appliedFor[];	//summer intern, intern, full time, I+F
+	private Boolean appliedFor[];	//summer intern, intern, full time, I+F
 	private String cv;
 	
-	public CompanyParticipation(Integer id, Integer companyId, Integer studentId, boolean[] appliedFor,String cv) {
+	public CompanyParticipation(Integer id, Integer companyId, Integer studentId, Boolean[] appliedFor,String cv) {
 		super();
 		this.id = id;
 		this.companyId = companyId;
@@ -57,10 +57,10 @@ public class CompanyParticipation {
 	public void setStudentId(Integer studentId) {
 		this.studentId = studentId;
 	}
-	public boolean[] getAppliedFor() {
+	public Boolean[] getAppliedFor() {
 		return appliedFor;
 	}
-	public void setAppliedFor(boolean[] appliedFor) {
+	public void setAppliedFor(Boolean[] appliedFor) {
 		this.appliedFor = appliedFor;
 	}
 	

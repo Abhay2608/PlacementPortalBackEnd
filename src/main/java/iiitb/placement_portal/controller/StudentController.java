@@ -8,11 +8,17 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.google.gson.Gson;
+import com.sun.tools.javac.code.Attribute.Array;
 
 import iiitb.placement_portal.entity.Company;
 import iiitb.placement_portal.entity.Student;
 import iiitb.placement_portal.services.StudentService;
+import org.apache.commons.io.FilenameUtils;
 
 @CrossOrigin( origins = "*" )
 @RestController
@@ -70,8 +76,20 @@ public class StudentController {
 		}
 		
 		@RequestMapping(method=RequestMethod.POST,value="/apply")
-		public ResponseEntity<String> applyCompany(@RequestBody Student student, Company company, boolean appliedFor[]){
-			if(studentService.applyCompany(student, company, appliedFor) == true)
+		public ResponseEntity<String> applyCompany(@RequestParam("cv") MultipartFile cv,@RequestParam(value = "student") String s, @RequestParam(value = "company") String c,@RequestParam(value = "appliedFor") String aF){
+		
+			Gson gson = new Gson();
+			Student student = gson.fromJson(s, Student.class); 
+			Company company = gson.fromJson(c, Company.class); 
+			Boolean appliedFor[] = gson.fromJson(aF, Boolean[].class); 
+
+			String extension = FilenameUtils.getExtension(cv.getOriginalFilename());
+			if(!(extension.equals("pdf") )) {
+				return new ResponseEntity<>("please upload pdf file",HttpStatus.BAD_REQUEST);
+			}
+
+			
+			if(studentService.applyCompany(student, company, appliedFor,cv,extension,"cv") == true)
 			{
 				return new ResponseEntity<>("Company application successfull",HttpStatus.OK);
 			}
@@ -80,4 +98,38 @@ public class StudentController {
 				return new ResponseEntity<>("Company application failed",HttpStatus.BAD_REQUEST);
 			}
 		}
+		
+		@RequestMapping(method = RequestMethod.POST,value="/uploadImage/{rollNo}")
+		public ResponseEntity<String> addImage(@RequestParam("id") String rollNo,@RequestParam("file") MultipartFile photo) {
+//	        final Authentication authentication = authenticationFacade.getAuthentication();
+//			log.debug(this.getClass() + " addImage method called by " + authentication.getName());
+			
+			String extension = FilenameUtils.getExtension(photo.getOriginalFilename());
+			if(!(extension.equals("jpg") || extension.equals("png") || extension.equals("jpeg"))) {
+				return new ResponseEntity<>("please upload image file",HttpStatus.BAD_REQUEST);
+			}
+			
+			if(studentService.addFile(rollNo,photo,extension,"photo")==true) {
+				return new ResponseEntity<>("image added",HttpStatus.OK);
+			}else {
+				return new ResponseEntity<>("error",HttpStatus.BAD_REQUEST);
+			}
+		}
+		@RequestMapping(method = RequestMethod.POST,value="/uploadCV/{rollNo}")
+		public ResponseEntity<String> addCv(@RequestParam("rollNo")String rollNo, @RequestParam("file") MultipartFile cv) {
+//	        final Authentication authentication = authenticationFacade.getAuthentication();
+//			log.debug(this.getClass() + " addImage method called by " + authentication.getName());
+			
+			String extension = FilenameUtils.getExtension(cv.getOriginalFilename());
+			if(!(extension.equals("pdf") )) {
+				return new ResponseEntity<>("please upload pdf file",HttpStatus.BAD_REQUEST);
+			}
+			
+			if(studentService.addFile(rollNo,cv,extension,"cv")==true) {
+				return new ResponseEntity<>("cv added",HttpStatus.OK);
+			}else {
+				return new ResponseEntity<>("error",HttpStatus.BAD_REQUEST);
+			}
+		}
+
 }

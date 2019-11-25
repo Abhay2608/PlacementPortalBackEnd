@@ -40,6 +40,14 @@ public class Student {
 	private String gender;
 	private Date dob;
 	private String image;
+	private String cv;
+	
+	public String getCv() {
+		return cv;
+	}
+	public void setCv(String cv) {
+		this.cv = cv;
+	}
 	public Integer getId() {
 		return id;
 	}
@@ -208,26 +216,27 @@ public class Student {
 	public void setImage(String image) {
 		this.image = image;
 	}
-	@Override
-	public String toString() {
-		return "Student [id=" + id + ", rollNo=" + rollNo + ", email=" + email + ", password=" + password + ", name="
-				+ name + ", phone=" + phone + ", cgpa=" + cgpa + ", stream=" + stream + ", batch=" + batch
-				+ ", placementYear=" + placementYear + ", address=" + address + ", pincode=" + pincode + ", state="
-				+ state + ", nationality=" + nationality + ", xBoard=" + xBoard + ", xPercentage=" + xPercentage
-				+ ", xYear=" + xYear + ", xiiBoard=" + xiiBoard + ", xiiPercentage=" + xiiPercentage + ", xiiYear="
-				+ xiiYear + ", undergraduateUniversity=" + undergraduateUniversity + ", undergraduateDegree="
-				+ undergraduateDegree + ", undergraduateYear=" + undergraduateYear + ", undergraduatePercentage="
-				+ undergraduatePercentage + ", gender=" + gender + ", dob=" + dob + ", image=" + image + "]";
-	}
 	public Student() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+	@Override
+	public String toString() {
+		return "Student [id=" + id + ", rollNo=" + rollNo + ", email=" + email + ", password=" + password + ", name="
+				+ name + ", phone=" + phone + ", cgpa=" + cgpa + ", stream=" + stream + ", course=" + course
+				+ ", batch=" + batch + ", placementYear=" + placementYear + ", address=" + address + ", pincode="
+				+ pincode + ", state=" + state + ", nationality=" + nationality + ", xBoard=" + xBoard
+				+ ", xPercentage=" + xPercentage + ", xYear=" + xYear + ", xiiBoard=" + xiiBoard + ", xiiPercentage="
+				+ xiiPercentage + ", xiiYear=" + xiiYear + ", undergraduateUniversity=" + undergraduateUniversity
+				+ ", undergraduateDegree=" + undergraduateDegree + ", undergraduateYear=" + undergraduateYear
+				+ ", undergraduatePercentage=" + undergraduatePercentage + ", gender=" + gender + ", dob=" + dob
+				+ ", image=" + image + ", cv=" + cv + "]";
 	}
 	public Student(Integer id, String rollNo, String email, String password, String name, String phone, float cgpa,
 			String stream, String course, String batch, Year placementYear, String address, String pincode,
 			String state, String nationality, String xBoard, float xPercentage, Year xYear, String xiiBoard,
 			float xiiPercentage, Year xiiYear, String undergraduateUniversity, String undergraduateDegree,
-			Year undergraduateYear, float undergraduatePercentage, String gender, Date dob, String image) {
+			Year undergraduateYear, float undergraduatePercentage, String gender, Date dob, String image, String cv) {
 		super();
 		this.id = id;
 		this.rollNo = rollNo;
@@ -257,6 +266,7 @@ public class Student {
 		this.gender = gender;
 		this.dob = dob;
 		this.image = image;
+		this.cv = cv;
 	}
 }
 

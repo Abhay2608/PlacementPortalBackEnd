@@ -1,9 +1,11 @@
 package iiitb.placement_portal.services;
 
 import java.util.Date;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -22,7 +24,8 @@ import java.util.Calendar;
 public class StudentService {
 	@Autowired
 	private StudentRepository studentRepository;
-	
+	@Autowired
+	private iiitb.placement_portal.services.StorageService storageService;
 	@Autowired
 	private CompanyParticipationRepository companyParticipationRepository;
 	
@@ -113,8 +116,11 @@ public class StudentService {
 		return res;
 	}
 	
-	public boolean applyCompany(Student s, Company c, boolean appliedFor[]) {
-		//cv part to be done
+	public boolean applyCompany(Student s, Company c, Boolean appliedFor[],MultipartFile file, String extension,String fileType) {
+		boolean res=true;
+		if(file==null) {
+			return false;
+		}
 	
 		String[] courseRequirement = c.getCourseRequirement();
 		String[] streamRequirement = c.getStreamRequirement();
@@ -147,6 +153,13 @@ public class StudentService {
 			date = true;
 		}
 		if(course && stream && date && appliedFlag) {
+
+			Student stu=studentRepository.findByRollNo(s.getRollNo());
+			String documentLink = fileType + "_" + s.getRollNo() + "." + extension;
+			res=storageService.addFile(documentLink, file);
+			stu.setCv(documentLink);
+			studentRepository.save(stu);
+
 			CompanyParticipation cp = new CompanyParticipation();
 			cp.setAppliedFor(appliedFor);
 			cp.setCompanyId(c.getId());
@@ -158,5 +171,27 @@ public class StudentService {
 			return false;
 		}
 		
+	}
+	
+	public boolean addFile(String rollNo,MultipartFile file, String extension, String type) {
+		boolean res=true;
+		if(file==null) {
+			return false;
+		}
+		try {
+			Student stu=studentRepository.findByRollNo(rollNo);
+			String documentLink = type + "_" + rollNo + "." + extension;
+			res=storageService.addFile(documentLink, file);
+			if(type.equals("photo")) {
+				stu.setImage(documentLink);
+			}else if(type.equals("cv")) {
+				stu.setCv(documentLink);
+			}
+			studentRepository.save(stu);
+		}catch(Exception e) {
+			res=false;
+//			log.debug(this.getClass() + " addImage method - exception " + e);
+		}
+		return res;
 	}
 }
