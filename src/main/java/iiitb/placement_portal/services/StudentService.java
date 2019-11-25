@@ -126,7 +126,11 @@ public class StudentService {
 		String[] streamRequirement = c.getStreamRequirement();
 		Date closetime = c.getClosetime();
 		boolean[] type = c.getType();
-		boolean course=false,stream=false,date=false,appliedFlag=false;
+		boolean course=false,stream=false,date=false,appliedFlag=false,cgpa=false;
+		
+		if(c.getCgpaRequired() <= s.getCgpa()) {
+			cgpa = true;
+		}
 		for(String tmp : courseRequirement) {
 			if(tmp.equals(s.getCourse())) {
 				course = true;
@@ -152,7 +156,7 @@ public class StudentService {
 		if(closetime.after(dateobj)) {
 			date = true;
 		}
-		if(course && stream && date && appliedFlag) {
+		if(course && stream && date && appliedFlag && cgpa) {
 
 			Student stu=studentRepository.findByRollNo(s.getRollNo());
 			String documentLink = fileType + "_" + s.getRollNo() + "." + extension;
