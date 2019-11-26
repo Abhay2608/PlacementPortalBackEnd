@@ -41,9 +41,10 @@ public class StudentController {
 		
 		@RequestMapping(method=RequestMethod.POST,value="/login")
 		public ResponseEntity<Object> authenticateStudent(@RequestBody Student student){
-			if(studentService.authenticateStudent(student)==true)
+			Student dbStudent = studentService.authenticateStudent(student);
+			if(dbStudent != null)
 			{
-				return new ResponseEntity<>(student,HttpStatus.OK);
+				return new ResponseEntity<>(dbStudent,HttpStatus.OK);
 			}
 			else
 			{

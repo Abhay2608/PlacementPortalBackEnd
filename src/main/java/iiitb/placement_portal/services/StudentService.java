@@ -52,17 +52,18 @@ public class StudentService {
 		return student;
 	}
 	
-	public boolean authenticateStudent(Student student) {
+	public Student authenticateStudent(Student student) {
 		boolean res = false;
 		try {
 			Student stu = studentRepository.findByRollNo(student.getRollNo());
 			if(stu.getPassword().equals(student.getPassword())) {
 				res = true;
+				return stu;
 			}
 		}catch(Exception e) {
 			System.out.println(e);
 		}
-		return res;
+		return null;
 	}
 	
 	public boolean updatePassword(Student student) {
