@@ -101,7 +101,7 @@ public class StudentService {
 		ArrayList<String> courseRequirement = c.getCourseRequirement();
 		ArrayList<String> streamRequirement = c.getStreamRequirement();
 		Date closetime = c.getClosetime();
-		boolean[] type = c.getType();
+		ArrayList<Boolean> type = c.getType();
 		boolean course=false,stream=false,date=false,appliedFlag=false,cgpa=false;
 		
 		if(c.getCgpaRequired() <= s.getCgpa()) {
@@ -121,8 +121,8 @@ public class StudentService {
 			}
 		}
 		
-		for(int i=0;i<type.length;i++) {
-			appliedFor[i] = type[i] & appliedFor[i];
+		for(int i=0;i<type.size();i++) {
+			appliedFor[i] = type.get(i) & appliedFor[i];
 			if(appliedFor[i] == true) {
 				appliedFlag = true;
 			}
