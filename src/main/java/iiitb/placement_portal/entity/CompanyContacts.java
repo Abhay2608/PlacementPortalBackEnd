@@ -6,13 +6,9 @@ import javax.persistence.GenerationType;
 
 import javax.persistence.Id;
 
-@Entity
 public class CompanyContacts {
 	
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
-	private Integer companyId;
 	private String name;
 	private String phone;
 	private String mobile;
@@ -23,12 +19,6 @@ public class CompanyContacts {
 	}
 	public void setId(Integer id) {
 		this.id = id;
-	}
-	public Integer getCompanyId() {
-		return companyId;
-	}
-	public void setCompanyId(Integer companyId) {
-		this.companyId = companyId;
 	}
 	public String getName() {
 		return name;
@@ -65,14 +55,13 @@ public class CompanyContacts {
 	}
 	@Override
 	public String toString() {
-		return "CompanyContacts [id=" + id + ", companyId=" + companyId + ", name=" + name + ", phone=" + phone
+		return "CompanyContacts [id=" + id + ", name=" + name + ", phone=" + phone
 				+ ", mobile=" + mobile + ", email=" + email + ", designation=" + designation + "]";
 	}
-	public CompanyContacts(Integer id, Integer companyId, String name, String phone, String mobile, String email,
+	public CompanyContacts(Integer id, String name, String phone, String mobile, String email,
 			String designation) {
 		super();
 		this.id = id;
-		this.companyId = companyId;
 		this.name = name;
 		this.phone = phone;
 		this.mobile = mobile;
