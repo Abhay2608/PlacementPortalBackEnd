@@ -18,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 @Service
@@ -97,8 +98,8 @@ public class StudentService {
 			return false;
 		}
 	
-		String[] courseRequirement = c.getCourseRequirement();
-		String[] streamRequirement = c.getStreamRequirement();
+		ArrayList<String> courseRequirement = c.getCourseRequirement();
+		ArrayList<String> streamRequirement = c.getStreamRequirement();
 		Date closetime = c.getClosetime();
 		boolean[] type = c.getType();
 		boolean course=false,stream=false,date=false,appliedFlag=false,cgpa=false;
