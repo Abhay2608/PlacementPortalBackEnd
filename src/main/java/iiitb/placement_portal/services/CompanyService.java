@@ -26,6 +26,7 @@ public class CompanyService {
 		return companies;
 	}
 	public boolean addCompany(Company company) {
+		System.out.println(company);
 		boolean res=true;
 		if(company.getName()==null) {
 			return false;
