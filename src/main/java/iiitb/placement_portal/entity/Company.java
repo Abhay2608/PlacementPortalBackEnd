@@ -26,6 +26,7 @@ public class Company {
 	private Date opentime;
 	private Date closetime;
 	private float cgpaRequired;
+	private String contactInString;
 	private ArrayList<String> courseRequirement;
 	private ArrayList<String> streamRequirement;
 	private ArrayList<CompanyContacts> contact;
@@ -33,11 +34,12 @@ public class Company {
 
 	public Company(Integer id, String name, ArrayList<CompanyContacts> contact, String jd, Date opentime,
 			Date closetime, ArrayList<String> courseRequirement, ArrayList<String> streamRequirement,
-			float cgpaRequired, ArrayList<Boolean> type) {
+			float cgpaRequired, ArrayList<Boolean> type, String contactInString) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.contact = contact;
+		this.contactInString = contactInString;
 		this.jd = jd;
 		this.opentime = opentime;
 		this.closetime = closetime;

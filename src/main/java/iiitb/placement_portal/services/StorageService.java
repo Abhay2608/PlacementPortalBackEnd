@@ -36,8 +36,6 @@ public class StorageService {
             
             Path dest=Paths.get(path+fileName);
             
-//			log.debug(this.getClass() + " Saving " + fileName + " in " + path + " .");
-            
             Files.copy(is, dest,
                     StandardCopyOption.REPLACE_EXISTING);
 		}catch(Exception e)
