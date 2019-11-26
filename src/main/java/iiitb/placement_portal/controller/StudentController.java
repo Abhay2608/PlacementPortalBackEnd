@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
-import com.sun.tools.javac.code.Attribute.Array;
 
 import iiitb.placement_portal.entity.Company;
 import iiitb.placement_portal.entity.Student;
