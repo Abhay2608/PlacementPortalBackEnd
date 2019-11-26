@@ -82,31 +82,6 @@ public class StudentService {
 		try {
 			Student studentObj = studentRepository.findByRollNo(student.getRollNo());
 			student = studentObj;
-			/*studentObj.setAddress(student.getAddress());
-			studentObj.setBatch(student.getBatch());
-			studentObj.setCgpa(student.getCgpa());
-			studentObj.setDob(student.getDob());
-			studentObj.setEmail(student.getEmail());
-			studentObj.setGender(student.getGender());
-			studentObj.setImage(student.getImage());
-			studentObj.setName(student.getName());
-			studentObj.setNationality(student.getNationality());
-			studentObj.setPassword(student.getPassword());
-			studentObj.setPhone(student.getPhone());
-			studentObj.setPincode(student.getPincode());
-			studentObj.setPlacementYear(student.getPlacementYear());
-			studentObj.setState(student.getState());
-			studentObj.setStream(student.getStream());
-			studentObj.setUndergraduateDegree(student.getUndergraduateDegree());
-			studentObj.setUndergraduatePercentage(student.getUndergraduatePercentage());
-			studentObj.setUndergraduateUniversity(student.getUndergraduateUniversity());
-			studentObj.setUndergraduateYear(student.getUndergraduateYear());
-			studentObj.setxBoard(student.getxBoard());
-			studentObj.setXiiBoard(student.getXiiBoard());
-			studentObj.setXiiPercentage(student.getXiiPercentage());
-			studentObj.setXiiYear(student.getXiiYear());
-			studentObj.setxPercentage(student.getxPercentage());
-			studentObj.setxYear(student.getxYear());*/
 			studentRepository.save(studentObj);
 		}
 		catch(Exception e) {
@@ -194,7 +169,6 @@ public class StudentService {
 			studentRepository.save(stu);
 		}catch(Exception e) {
 			res=false;
-//			log.debug(this.getClass() + " addImage method - exception " + e);
 		}
 		return res;
 	}

@@ -40,10 +40,10 @@ public class StudentController {
 		}
 		
 		@RequestMapping(method=RequestMethod.POST,value="/login")
-		public ResponseEntity<String> authenticateStudent(@RequestBody Student student){
+		public ResponseEntity<Object> authenticateStudent(@RequestBody Student student){
 			if(studentService.authenticateStudent(student)==true)
 			{
-				return new ResponseEntity<>("login success",HttpStatus.OK);
+				return new ResponseEntity<>(student,HttpStatus.OK);
 			}
 			else
 			{
@@ -100,10 +100,7 @@ public class StudentController {
 		}
 		
 		@RequestMapping(method = RequestMethod.POST,value="/uploadImage/{rollNo}")
-		public ResponseEntity<String> addImage(@RequestParam("id") String rollNo,@RequestParam("file") MultipartFile photo) {
-//	        final Authentication authentication = authenticationFacade.getAuthentication();
-//			log.debug(this.getClass() + " addImage method called by " + authentication.getName());
-			
+		public ResponseEntity<String> addImage(@RequestParam("id") String rollNo,@RequestParam("file") MultipartFile photo) {			
 			String extension = FilenameUtils.getExtension(photo.getOriginalFilename());
 			if(!(extension.equals("jpg") || extension.equals("png") || extension.equals("jpeg"))) {
 				return new ResponseEntity<>("please upload image file",HttpStatus.BAD_REQUEST);
@@ -117,9 +114,6 @@ public class StudentController {
 		}
 		@RequestMapping(method = RequestMethod.POST,value="/uploadCV/{rollNo}")
 		public ResponseEntity<String> addCv(@RequestParam("rollNo")String rollNo, @RequestParam("file") MultipartFile cv) {
-//	        final Authentication authentication = authenticationFacade.getAuthentication();
-//			log.debug(this.getClass() + " addImage method called by " + authentication.getName());
-			
 			String extension = FilenameUtils.getExtension(cv.getOriginalFilename());
 			if(!(extension.equals("pdf") )) {
 				return new ResponseEntity<>("please upload pdf file",HttpStatus.BAD_REQUEST);

@@ -52,7 +52,7 @@ public class StorageService {
 	
 	public Resource loadFileAsResource(String fileName) {
         try {
-        	Path fileStorageLocation= Paths.get("C:\\document\\")
+        	Path fileStorageLocation= Paths.get("C:\\placement_portal\\")
                     .toAbsolutePath().normalize();
             Path filePath = fileStorageLocation.resolve(fileName).normalize();
             Resource resource = new UrlResource(filePath.toUri());
