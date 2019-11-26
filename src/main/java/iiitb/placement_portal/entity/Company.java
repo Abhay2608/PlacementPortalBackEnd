@@ -32,6 +32,7 @@ public class Company {
 	private String streamRequirement[];
 	private float cgpaRequired;
 	private boolean type[];	//summer intern, intern, full time, I+F
+	
 	public Company(Integer id, String name, CompanyContacts[] contact, String jd, Date opentime, Date closetime,
 			String[] courseRequirement, String[] streamRequirement, float cgpaRequired, boolean[] type) {
 		super();

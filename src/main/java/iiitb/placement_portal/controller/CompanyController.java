@@ -2,6 +2,7 @@ package iiitb.placement_portal.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,10 +24,11 @@ public class CompanyController {
 	@Autowired
 	private CompanyService companyService;
 	
-	@RequestMapping(method=RequestMethod.GET,value="")
+	@GetMapping
 	public ResponseEntity<ArrayList<Company>> getAllCompanies(){
 		return new ResponseEntity<>(companyService.getAllCompanies(),HttpStatus.OK);
 	}
+	
 	@PostMapping
 	public ResponseEntity<String> addCompany(@RequestBody Company company) {
 		if(companyService.addCompany(company)==true) {
