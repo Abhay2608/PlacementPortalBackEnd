@@ -60,6 +60,9 @@ public class CompanyContacts {
 	public void setDesignation(String designation) {
 		this.designation = designation;
 	}
+	public CompanyContacts() {
+		
+	}
 	@Override
 	public String toString() {
 		return "CompanyContacts [id=" + id + ", companyId=" + companyId + ", name=" + name + ", phone=" + phone

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
-import com.sun.tools.javac.code.Attribute.Array;
 
 import iiitb.placement_portal.entity.Company;
 import iiitb.placement_portal.entity.Student;
@@ -28,7 +28,7 @@ public class StudentController {
 		@Autowired
 		private StudentService studentService;
 		
-		@RequestMapping(method=RequestMethod.POST,value="/register")
+		@PostMapping(value="/register")
 		public ResponseEntity<String> registerStudent(@RequestBody Student student){
 			if(studentService.registerStudent(student)==true) {
 				return new ResponseEntity<>("registration successfull",HttpStatus.OK);
