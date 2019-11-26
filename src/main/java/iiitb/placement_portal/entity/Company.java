@@ -22,17 +22,18 @@ public class Company {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 	private String name;
-	private ArrayList<CompanyContacts> contact;
 	private String jd;
 	private Date opentime;
 	private Date closetime;
+	private float cgpaRequired;
 	private ArrayList<String> courseRequirement;
 	private ArrayList<String> streamRequirement;
-	private float cgpaRequired;
-	private boolean type[];	//summer intern, intern, full time, I+F
+	private ArrayList<CompanyContacts> contact;
+	private ArrayList<Boolean> type;	//summer intern, intern, full time, I+F
+
 	public Company(Integer id, String name, ArrayList<CompanyContacts> contact, String jd, Date opentime,
 			Date closetime, ArrayList<String> courseRequirement, ArrayList<String> streamRequirement,
-			float cgpaRequired, boolean[] type) {
+			float cgpaRequired, ArrayList<Boolean> type) {
 		super();
 		this.id = id;
 		this.name = name;
