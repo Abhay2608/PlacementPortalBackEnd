@@ -3,10 +3,11 @@ package iiitb.placement_portal.entity;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
-import org.springframework.data.annotation.Id;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
