@@ -25,4 +25,16 @@ public class CompanyService {
 		}
 		return companies;
 	}
+	public boolean addCompany(Company company) {
+		boolean res=true;
+		if(company.getName()==null) {
+			return false;
+		}
+		try {
+			companyRepository.save(company);
+		}catch(Exception e) {
+			res=false;
+		}
+		return res;
+	}
 }
