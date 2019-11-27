@@ -20,6 +20,8 @@ import iiitb.placement_portal.entity.Student;
 import iiitb.placement_portal.services.StudentService;
 import org.apache.commons.io.FilenameUtils;
 
+import java.util.ArrayList;
+
 @CrossOrigin( origins = "*" )
 @RestController
 @RequestMapping("/student")
@@ -113,6 +115,7 @@ public class StudentController {
 				return new ResponseEntity<>("error",HttpStatus.BAD_REQUEST);
 			}
 		}
+
 		@RequestMapping(method = RequestMethod.POST,value="/uploadCV/{rollNo}")
 		public ResponseEntity<String> addCv(@RequestParam("rollNo")String rollNo, @RequestParam("file") MultipartFile cv) {
 			String extension = FilenameUtils.getExtension(cv.getOriginalFilename());
@@ -125,6 +128,11 @@ public class StudentController {
 			}else {
 				return new ResponseEntity<>("error",HttpStatus.BAD_REQUEST);
 			}
+		}
+
+		@RequestMapping(method=RequestMethod.GET,value="/viewUpcomingCompanies/{rollNo}")
+		public ResponseEntity<ArrayList<Company>> getUpcomingCompanies(@RequestParam("rollNo")String rollNo){
+			return new ResponseEntity<ArrayList<Company>>(studentService.viewUpcomingCompanies(rollNo),HttpStatus.OK);
 		}
 
 }

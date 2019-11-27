@@ -3,6 +3,7 @@ package iiitb.placement_portal.services;
 import java.util.Date;
 import java.util.Optional;
 
+import org.springframework.beans.CachedIntrospectionResults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,6 +30,9 @@ public class StudentService {
 	private iiitb.placement_portal.services.StorageService storageService;
 	@Autowired
 	private CompanyParticipationRepository companyParticipationRepository;
+	@Autowired
+	private CompanyService companyService;
+
 	
 	public boolean registerStudent(Student student) {
 		boolean res=true;
@@ -173,5 +177,55 @@ public class StudentService {
 			res=false;
 		}
 		return res;
+	}
+
+	public ArrayList<Company> viewUpcomingCompanies(String rollNo){
+		Student dbStudent = studentRepository.findByRollNo(rollNo);
+		ArrayList<Company> companies = companyService.getAllCompanies();
+		ArrayList<Company> upcomingCompanies = new ArrayList<>();
+		for(Company company : companies){
+			if(checkRequirement(dbStudent,company) == true){
+				upcomingCompanies.add(company);
+			}
+		}
+
+		return  upcomingCompanies;
+	}
+
+	private boolean checkRequirement(Student student, Company company){
+		boolean course=false,stream=false,date=false,cgpa=false;
+
+		ArrayList<String> courseRequirement = company.getCourseRequirement();
+		ArrayList<String> streamRequirement = company.getStreamRequirement();
+
+		for (String tmp : courseRequirement){
+			if(tmp.equals(student.getCourse())){
+				course = true;
+				break;
+			}
+		}
+
+		for (String tmp : streamRequirement){
+			if(tmp.equals(student.getStream())){
+				stream = true;
+				break;
+			}
+		}
+
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date dateobj = new Date();
+		if(company.getClosetime().after(dateobj)) {
+			date = true;
+		}
+
+		if(company.getCgpaRequired() <= student.getCgpa()){
+			cgpa = true;
+		}
+
+
+		if (course && stream && date && cgpa){
+			return true;
+		}
+		return false;
 	}
 }
