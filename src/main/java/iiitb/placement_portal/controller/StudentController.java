@@ -1,16 +1,11 @@
 package iiitb.placement_portal.controller;
 
 
+import iiitb.placement_portal.dto.UpcomingCompanyDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
@@ -138,10 +133,10 @@ public class StudentController {
 		}
 
 		@RequestMapping(method=RequestMethod.GET,value="/viewUpcomingCompanies/{rollNo}")
-		public ResponseEntity<ArrayList<Company>> viewUpcomingCompanies(@PathParam("rollNo")String rollNo){
+		public ResponseEntity<ArrayList<UpcomingCompanyDTO>> viewUpcomingCompanies(@PathVariable("rollNo")String rollNo){
 			System.out.println(rollNo);
-			rollNo = rollNo.toLowerCase();
-			return new ResponseEntity<ArrayList<Company>>(studentService.viewUpcomingCompanies(rollNo),HttpStatus.OK);
+			return new ResponseEntity<ArrayList<UpcomingCompanyDTO>>(studentService.viewUpcomingCompanies(rollNo),HttpStatus.OK);
+			//return new ResponseEntity<ArrayList<UpcomingCompanyDTO>>(HttpStatus.OK);
 		}
 
 }
