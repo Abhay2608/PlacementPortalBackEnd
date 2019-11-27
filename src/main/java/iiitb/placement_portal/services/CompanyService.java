@@ -28,9 +28,9 @@ public class CompanyService {
 	public boolean addCompany(Company company) {
 		System.out.println(company);
 		boolean res=true;
-		if(company.getName()==null) {
+		/*if(company.getName()==null) {
 			return false;
-		}
+		}*/
 		try {
 			companyRepository.save(company);
 		}catch(Exception e) {

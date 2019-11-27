@@ -24,12 +24,14 @@ public class CompanyController {
 	@Autowired
 	private CompanyService companyService;
 	
-	@GetMapping
+	//@GetMapping
+	@RequestMapping(method=RequestMethod.GET,value="/getAllCompanies")
 	public ResponseEntity<ArrayList<Company>> getAllCompanies(){
 		return new ResponseEntity<>(companyService.getAllCompanies(),HttpStatus.OK);
 	}
 	
-	@PostMapping
+	//@PostMapping
+	@RequestMapping(method=RequestMethod.POST,value="/addCompany")
 	public ResponseEntity<String> addCompany(@RequestBody Company company) {
 		if(companyService.addCompany(company)==true) {
 			return new ResponseEntity<>("company added",HttpStatus.OK);
