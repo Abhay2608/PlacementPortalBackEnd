@@ -198,18 +198,27 @@ public class StudentService {
 	}
 
 	public ArrayList<UpcomingCompanyDTO> viewUpcomingCompanies(String rollNo){
-		Student dbStudent = studentRepository.findByRollNo(rollNo);
+		System.out.println(rollNo);
+		Student dbStudent = studentRepository.findByRollNo(rollNo.toUpperCase());
+		if(dbStudent == null){
+			dbStudent = studentRepository.findByRollNo(rollNo.toLowerCase());
+		}
+		System.out.println(dbStudent.getRollNo());
 		ArrayList<Company> companies = companyService.getAllCompanies();
-		ArrayList<UpcomingCompanyDTO> upcomingCompaniesDTO = new ArrayList<>();
+		ArrayList<UpcomingCompanyDTO> upcomingCompanyDTO = new ArrayList<>();
 		for(Company company : companies){
 			StringBuilder stringBuilder = new StringBuilder();
 			boolean isEligible = true;
 			if(checkRequirement(dbStudent,company,stringBuilder,isEligible) == true){
-				upcomingCompaniesDTO.add(new UpcomingCompanyDTO(isEligible, stringBuilder.toString(), company));
+				upcomingCompanyDTO.add(new UpcomingCompanyDTO(isEligible, stringBuilder.toString(), company));
 			}
 		}
-
-		return  upcomingCompaniesDTO;
+		for(UpcomingCompanyDTO u : upcomingCompanyDTO){
+			System.out.println(u.getCompany().getName());
+			System.out.println(u.getNonEligibiltyReason());
+			System.out.println(u.isEligible());
+		}
+		return  upcomingCompanyDTO;
 	}
 
 	private boolean checkRequirement(Student student, Company company,StringBuilder stringBuilder,boolean isEligible){
