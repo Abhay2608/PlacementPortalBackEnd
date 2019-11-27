@@ -203,37 +203,9 @@ public class StudentService {
 	}
 
 	private boolean checkRequirement(Student student, Company company){
-		boolean course=false,stream=false,date=false,cgpa=false;
-
-		ArrayList<String> courseRequirement = company.getCourseRequirement();
-		ArrayList<String> streamRequirement = company.getStreamRequirement();
-
-		for (String tmp : courseRequirement){
-			if(tmp.equals(student.getCourse())){
-				course = true;
-				break;
-			}
-		}
-
-		for (String tmp : streamRequirement){
-			if(tmp.equals(student.getStream())){
-				stream = true;
-				break;
-			}
-		}
-
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date dateobj = new Date();
 		if(company.getClosetime().after(dateobj)) {
-			date = true;
-		}
-
-		if(company.getCgpaRequired() <= student.getCgpa()){
-			cgpa = true;
-		}
-
-
-		if (course && stream && date && cgpa){
 			return true;
 		}
 		return false;
