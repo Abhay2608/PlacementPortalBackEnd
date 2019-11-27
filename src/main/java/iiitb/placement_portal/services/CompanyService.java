@@ -70,11 +70,8 @@ public class CompanyService {
 			Optional<Company> c=companyRepository.findById(company.getId());
 			String documentLink = fileType + "_" + c.get().getId() + "." + extension;
 			res=storageService.addFile(documentLink, file);
-			
 			c.get().setJd(documentLink);
 			companyRepository.save(c.get());
-
-			
 		}catch(Exception e) {
 			System.out.println(e);
 			res=false;
