@@ -9,7 +9,6 @@ import javax.persistence.Id;
 
 @Entity
 public class Student {
-
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;

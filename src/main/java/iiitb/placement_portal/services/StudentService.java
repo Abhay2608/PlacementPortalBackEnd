@@ -1,8 +1,11 @@
 package iiitb.placement_portal.services;
 
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
+import java.lang.String;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import iiitb.placement_portal.entity.CompanyContacts;
 import org.springframework.beans.CachedIntrospectionResults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,8 +22,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 
 @Service
 public class StudentService {
@@ -33,7 +34,16 @@ public class StudentService {
 	@Autowired
 	private CompanyService companyService;
 
-	
+	public ArrayList<Student> getAllStudents(){
+		ArrayList<Student> students = new ArrayList<Student>();
+		Iterable<Student> iterable = studentRepository.findAll();
+		Iterator<Student> iterator = iterable.iterator();
+		while(iterator.hasNext()) {
+			students.add(iterator.next());
+		}
+
+		return students;
+	}
 	public boolean registerStudent(Student student) {
 		boolean res=true;
 		try {
@@ -86,9 +96,9 @@ public class StudentService {
 	public boolean updateStudentDetails(Student student) {
 		boolean res = true;
 		try {
-			Student studentObj = studentRepository.findByRollNo(student.getRollNo());
-			student = studentObj;
-			studentRepository.save(studentObj);
+			//Student studentObj = studentRepository.findByRollNo(student.getRollNo());
+			//student = studentObj;
+			studentRepository.save(student);
 		}
 		catch(Exception e) {
 			res = false;

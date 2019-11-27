@@ -40,7 +40,12 @@ public class StudentController {
 				return new ResponseEntity<>("registration denied",HttpStatus.BAD_REQUEST);
 			}
 		}
-		
+
+		@RequestMapping(method = RequestMethod.GET,value = "/getAllStudents")
+		public ResponseEntity<ArrayList<Student>> getAllStudents(){
+			return new ResponseEntity<>(studentService.getAllStudents(),HttpStatus.OK);
+		}
+
 		@RequestMapping(method=RequestMethod.POST,value="/login")
 		public ResponseEntity<Object> authenticateStudent(@RequestBody Student student){
 			Student dbStudent = studentService.authenticateStudent(student);
