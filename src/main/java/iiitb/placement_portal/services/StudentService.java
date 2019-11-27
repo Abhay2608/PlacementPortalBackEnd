@@ -208,15 +208,18 @@ public class StudentService {
 		ArrayList<UpcomingCompanyDTO> upcomingCompanyDTO = new ArrayList<>();
 		for(Company company : companies){
 			StringBuilder stringBuilder = new StringBuilder();
-			boolean isEligible = true;
-			if(checkRequirement(dbStudent,company,stringBuilder,isEligible) == true){
+			Boolean isEligible = false;
+			if(checkRequirement(dbStudent,company,stringBuilder) == true){
+				if(stringBuilder.toString().length() == 0)	{
+					isEligible = true;
+				}
 				upcomingCompanyDTO.add(new UpcomingCompanyDTO(isEligible, stringBuilder.toString(), company));
 			}
 		}
 		return  upcomingCompanyDTO;
 	}
 
-	private boolean checkRequirement(Student student, Company company,StringBuilder stringBuilder,boolean isEligible){
+	private boolean checkRequirement(Student student, Company company,StringBuilder stringBuilder){
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date dateobj = new Date();
 		if(company.getClosetime().after(dateobj)) {
@@ -233,9 +236,11 @@ public class StudentService {
 			ArrayList<String> streamRequirements = company.getStreamRequirement();
 
 			for(String tmp : courseRequirements){
-				if(tmp.toLowerCase().equals(student.getCourse())){
-					System.out.println("tmp:  " + tmp + "  student:  " + student.getCourse() + "\n");
+				//System.out.println("tmp:  " + tmp.toLowerCase() + "  student:  " + student.getCourse().toLowerCase() + "\n");
+				//System.out.println(tmp.toLowerCase().equals(student.getCourse().toLowerCase()));
+				if(tmp.toLowerCase().equals(student.getCourse().toLowerCase())){
 					course = true;
+					//System.out.println(course);
 					break;
 				}
 			}
@@ -244,16 +249,13 @@ public class StudentService {
 			}
 
 			for(String tmp : streamRequirements){
-				if(tmp.toLowerCase().equals(student.getStream())){
+				if(tmp.toLowerCase().equals(student.getStream().toLowerCase())){
 					stream = true;
 					break;
 				}
 			}
 			if(stream == false){
 				stringBuilder.append("Stream criteria not satisfied.");
-			}
-			if(cgpa && course && stream){
-				isEligible = true;
 			}
 			return true;
 		}
