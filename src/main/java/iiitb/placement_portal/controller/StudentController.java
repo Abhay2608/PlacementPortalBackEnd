@@ -20,6 +20,7 @@ import iiitb.placement_portal.entity.Student;
 import iiitb.placement_portal.services.StudentService;
 import org.apache.commons.io.FilenameUtils;
 
+import javax.ws.rs.PathParam;
 import java.util.ArrayList;
 
 @CrossOrigin( origins = "*" )
@@ -136,7 +137,8 @@ public class StudentController {
 		}
 
 		@RequestMapping(method=RequestMethod.GET,value="/viewUpcomingCompanies/{rollNo}")
-		public ResponseEntity<ArrayList<Company>> getUpcomingCompanies(@RequestParam("rollNo")String rollNo){
+		public ResponseEntity<ArrayList<Company>> viewUpcomingCompanies(@PathParam("rollNo")String rollNo){
+			System.out.println(rollNo);
 			return new ResponseEntity<ArrayList<Company>>(studentService.viewUpcomingCompanies(rollNo),HttpStatus.OK);
 		}
 
