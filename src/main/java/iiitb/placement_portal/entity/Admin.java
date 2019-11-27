@@ -17,6 +17,7 @@ import lombok.ToString;
 @Getter @Setter @NoArgsConstructor @ToString
 
 public class Admin {
+	
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
