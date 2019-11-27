@@ -213,11 +213,6 @@ public class StudentService {
 				upcomingCompanyDTO.add(new UpcomingCompanyDTO(isEligible, stringBuilder.toString(), company));
 			}
 		}
-		for(UpcomingCompanyDTO u : upcomingCompanyDTO){
-			System.out.println(u.getCompany().getName());
-			System.out.println(u.getNonEligibiltyReason());
-			System.out.println(u.isEligible());
-		}
 		return  upcomingCompanyDTO;
 	}
 
@@ -226,7 +221,7 @@ public class StudentService {
 		Date dateobj = new Date();
 		if(company.getClosetime().after(dateobj)) {
 			boolean cgpa = false,course = false, stream = false;
-			if((int)company.getCgpaRequired()*100 > (int)student.getCgpa()*100){
+			if((int)(company.getCgpaRequired()*100) > (int)(student.getCgpa()*100)){
 				stringBuilder.append("CGPA criteria not satisfied.\n");
 			}
 			else{
@@ -239,6 +234,7 @@ public class StudentService {
 
 			for(String tmp : courseRequirements){
 				if(tmp.toLowerCase().equals(student.getCourse())){
+					System.out.println("tmp:  " + tmp + "  student:  " + student.getCourse() + "\n");
 					course = true;
 					break;
 				}

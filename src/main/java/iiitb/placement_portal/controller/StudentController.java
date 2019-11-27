@@ -134,9 +134,7 @@ public class StudentController {
 
 		@RequestMapping(method=RequestMethod.GET,value="/viewUpcomingCompanies/{rollNo}")
 		public ResponseEntity<ArrayList<UpcomingCompanyDTO>> viewUpcomingCompanies(@PathVariable("rollNo")String rollNo){
-			System.out.println(rollNo);
 			return new ResponseEntity<ArrayList<UpcomingCompanyDTO>>(studentService.viewUpcomingCompanies(rollNo),HttpStatus.OK);
-			//return new ResponseEntity<ArrayList<UpcomingCompanyDTO>>(HttpStatus.OK);
 		}
 
 }
