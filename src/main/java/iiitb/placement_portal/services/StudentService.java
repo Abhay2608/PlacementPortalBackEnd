@@ -182,6 +182,7 @@ public class StudentService {
 			Student stu=studentRepository.findByRollNo(rollNo);
 			String documentLink = type + "_" + rollNo + "." + extension;
 			res=storageService.addFile(documentLink, file);
+			
 			if(type.equals("photo")) {
 				stu.setImage(documentLink);
 			}else if(type.equals("cv")) {
@@ -190,6 +191,7 @@ public class StudentService {
 			studentRepository.save(stu);
 		}catch(Exception e) {
 			res=false;
+			System.out.println(e);
 		}
 		return res;
 	}

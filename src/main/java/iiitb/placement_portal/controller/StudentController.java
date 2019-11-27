@@ -108,13 +108,13 @@ public class StudentController {
 			}
 		}
 		
-		@RequestMapping(method = RequestMethod.POST,value="/uploadImage/{rollNo}")
-		public ResponseEntity<String> addImage(@RequestParam("id") String rollNo,@RequestParam("file") MultipartFile photo) {			
+		@RequestMapping(method = RequestMethod.POST,value="/uploadImage")
+		public ResponseEntity<String> addImage(@RequestParam("rollNo") String rollNo,@RequestParam("file") MultipartFile photo) {			
 			String extension = FilenameUtils.getExtension(photo.getOriginalFilename());
 			if(!(extension.equals("jpg") || extension.equals("png") || extension.equals("jpeg"))) {
 				return new ResponseEntity<>("please upload image file",HttpStatus.BAD_REQUEST);
 			}
-			
+			rollNo = rollNo.toLowerCase();
 			if(studentService.addFile(rollNo,photo,extension,"photo")==true) {
 				return new ResponseEntity<>("image added",HttpStatus.OK);
 			}else {
@@ -122,13 +122,14 @@ public class StudentController {
 			}
 		}
 
-		@RequestMapping(method = RequestMethod.POST,value="/uploadCV/{rollNo}")
+		@RequestMapping(method = RequestMethod.POST,value="/uploadCV")
 		public ResponseEntity<String> addCv(@RequestParam("rollNo")String rollNo, @RequestParam("file") MultipartFile cv) {
 			String extension = FilenameUtils.getExtension(cv.getOriginalFilename());
 			if(!(extension.equals("pdf") )) {
 				return new ResponseEntity<>("please upload pdf file",HttpStatus.BAD_REQUEST);
 			}
-			
+			rollNo = rollNo.toLowerCase();
+
 			if(studentService.addFile(rollNo,cv,extension,"cv")==true) {
 				return new ResponseEntity<>("cv added",HttpStatus.OK);
 			}else {
@@ -139,6 +140,7 @@ public class StudentController {
 		@RequestMapping(method=RequestMethod.GET,value="/viewUpcomingCompanies/{rollNo}")
 		public ResponseEntity<ArrayList<Company>> viewUpcomingCompanies(@PathParam("rollNo")String rollNo){
 			System.out.println(rollNo);
+			rollNo = rollNo.toLowerCase();
 			return new ResponseEntity<ArrayList<Company>>(studentService.viewUpcomingCompanies(rollNo),HttpStatus.OK);
 		}
 
