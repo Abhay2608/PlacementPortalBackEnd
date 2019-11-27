@@ -5,6 +5,7 @@ import java.lang.String;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import iiitb.placement_portal.dto.UpcomingCompanyDTO;
 import iiitb.placement_portal.entity.CompanyContacts;
 import org.springframework.beans.CachedIntrospectionResults;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -196,23 +197,59 @@ public class StudentService {
 		return res;
 	}
 
-	public ArrayList<Company> viewUpcomingCompanies(String rollNo){
+	public ArrayList<UpcomingCompanyDTO> viewUpcomingCompanies(String rollNo){
 		Student dbStudent = studentRepository.findByRollNo(rollNo);
 		ArrayList<Company> companies = companyService.getAllCompanies();
-		ArrayList<Company> upcomingCompanies = new ArrayList<>();
+		ArrayList<UpcomingCompanyDTO> upcomingCompaniesDTO = new ArrayList<>();
 		for(Company company : companies){
-			if(checkRequirement(dbStudent,company) == true){
-				upcomingCompanies.add(company);
+			StringBuilder stringBuilder = new StringBuilder();
+			boolean isEligible = true;
+			if(checkRequirement(dbStudent,company,stringBuilder,isEligible) == true){
+				upcomingCompaniesDTO.add(new UpcomingCompanyDTO(isEligible, stringBuilder.toString(), company));
 			}
 		}
 
-		return  upcomingCompanies;
+		return  upcomingCompaniesDTO;
 	}
 
-	private boolean checkRequirement(Student student, Company company){
+	private boolean checkRequirement(Student student, Company company,StringBuilder stringBuilder,boolean isEligible){
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date dateobj = new Date();
 		if(company.getClosetime().after(dateobj)) {
+			boolean cgpa = false,course = false, stream = false;
+			if((int)company.getCgpaRequired()*100 > (int)student.getCgpa()*100){
+				stringBuilder.append("CGPA criteria not satisfied.\n");
+			}
+			else{
+				cgpa = true;
+			}
+
+
+			ArrayList<String> courseRequirements = company.getCourseRequirement();
+			ArrayList<String> streamRequirements = company.getStreamRequirement();
+
+			for(String tmp : courseRequirements){
+				if(tmp.toLowerCase().equals(student.getCourse())){
+					course = true;
+					break;
+				}
+			}
+			if(course == false){
+				stringBuilder.append("Course criteria not satisfied.\n");
+			}
+
+			for(String tmp : streamRequirements){
+				if(tmp.toLowerCase().equals(student.getStream())){
+					stream = true;
+					break;
+				}
+			}
+			if(stream == false){
+				stringBuilder.append("Stream criteria not satisfied.");
+			}
+			if(cgpa && course && stream){
+				isEligible = true;
+			}
 			return true;
 		}
 		return false;

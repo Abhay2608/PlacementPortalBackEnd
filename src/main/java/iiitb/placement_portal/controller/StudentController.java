@@ -1,6 +1,7 @@
 package iiitb.placement_portal.controller;
 
 
+import iiitb.placement_portal.dto.UpcomingCompanyDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -138,10 +139,10 @@ public class StudentController {
 		}
 
 		@RequestMapping(method=RequestMethod.GET,value="/viewUpcomingCompanies/{rollNo}")
-		public ResponseEntity<ArrayList<Company>> viewUpcomingCompanies(@PathParam("rollNo")String rollNo){
+		public ResponseEntity<ArrayList<UpcomingCompanyDTO>> viewUpcomingCompanies(@PathParam("rollNo")String rollNo){
 			System.out.println(rollNo);
 			rollNo = rollNo.toLowerCase();
-			return new ResponseEntity<ArrayList<Company>>(studentService.viewUpcomingCompanies(rollNo),HttpStatus.OK);
+			return new ResponseEntity<ArrayList<UpcomingCompanyDTO>>(studentService.viewUpcomingCompanies(rollNo),HttpStatus.OK);
 		}
 
 }
