@@ -69,7 +69,12 @@ public class StudentService {
 	public Student authenticateStudent(Student student) {
 		boolean res = false;
 		try {
-			Student stu = studentRepository.findByRollNo(student.getRollNo());
+			String rollNoLower = student.getRollNo().toLowerCase();
+			String rollNoUpper = student.getRollNo().toUpperCase();
+			Student stu = studentRepository.findByRollNo(rollNoLower);
+			if(stu == null){
+				stu = studentRepository.findByRollNo(rollNoUpper);
+			}
 			if(stu.getPassword().equals(student.getPassword())) {
 				res = true;
 				return stu;
