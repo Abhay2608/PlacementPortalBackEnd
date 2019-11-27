@@ -9,11 +9,11 @@ class AddAdminUtility{
 	public static void main(String args[]){  
 	try{  
 		Class.forName("com.mysql.jdbc.Driver");  
-		Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/placement_portal","ooad","root");  
+		Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/placementportal","ooad","root");  
 
 //		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 			
-		String query = "insert into user(id,name,password)values(?,?,?)";
+		String query = "insert into admin(id,email,password)values(?,?,?)";
 		PreparedStatement preparedStmt = con.prepareStatement(query);
 		preparedStmt.setInt(1,14);
 //	    preparedStmt.setString(2,passwordEncoder.encode("password"));

@@ -1,0 +1,66 @@
+package iiitb.placement_portal.services;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import iiitb.placement_portal.entity.Admin;
+import iiitb.placement_portal.repository.AdminRepository;
+import lombok.extern.slf4j.Slf4j;
+
+@Service
+@Slf4j
+public class AdminService {
+	
+	@Autowired
+	private AdminRepository adminRepository;
+	
+	
+	public boolean addAdmin(Admin admin) {
+		boolean res=true;
+		if(admin.getEmail()==null) {
+			return false;
+		}
+		try {
+			adminRepository.save(admin);
+		}catch(Exception e) {
+			res=false;
+			log.debug(this.getClass() + " addAdmin method - exception " + e);
+		}
+		return res;
+	}
+	
+
+	public ArrayList<Admin> getAllAdmin(){
+		ArrayList<Admin> admin=new ArrayList<Admin>();
+		Iterable<Admin> iterable=adminRepository.findAll();
+		Iterator<Admin> iterator=iterable.iterator();
+		while(iterator.hasNext()) {
+			admin.add(iterator.next());
+		}
+		return admin;
+	}
+	
+	public Admin getAdminById(Integer id) {
+		return adminRepository.findById(id).get();
+	}
+		
+	public boolean removeAdmin(Integer id) {
+		adminRepository.deleteById(id);
+		return true;
+	}
+	
+	public Admin updateAdmin(Admin admin) {
+		if(adminRepository.save(admin) != null) {
+			return admin;
+		}
+		else return null;
+	}
+	
+
+
+}
