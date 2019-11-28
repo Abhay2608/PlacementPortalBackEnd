@@ -2,18 +2,26 @@ package iiitb.placement_portal.dto;
 
 import iiitb.placement_portal.entity.Company;
 
-public class UpcomingCompanyDTO {
+public class CompanyDTO {
     private boolean isEligible;
     private String nonEligibiltyReason;
+    private String comingFor;
     private Company company;
 
-    public UpcomingCompanyDTO(boolean isEligible, String nonEligibiltyReason, Company company) {
+    public CompanyDTO(boolean isEligible, String nonEligibiltyReason, Company company) {
         this.isEligible = isEligible;
         this.nonEligibiltyReason = nonEligibiltyReason;
         this.company = company;
     }
 
-    public UpcomingCompanyDTO() {
+    public CompanyDTO(boolean isEligible, String nonEligibiltyReason, String comingFor, Company company) {
+        this.isEligible = isEligible;
+        this.nonEligibiltyReason = nonEligibiltyReason;
+        this.comingFor = comingFor;
+        this.company = company;
+    }
+
+    public CompanyDTO() {
     }
 
     public boolean isEligible() {

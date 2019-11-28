@@ -1,7 +1,7 @@
 package iiitb.placement_portal.controller;
 
 
-import iiitb.placement_portal.dto.UpcomingCompanyDTO;
+import iiitb.placement_portal.dto.CompanyDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -133,8 +133,8 @@ public class StudentController {
 		}
 
 		@RequestMapping(method=RequestMethod.GET,value="/viewUpcomingCompanies/{rollNo}")
-		public ResponseEntity<ArrayList<UpcomingCompanyDTO>> viewUpcomingCompanies(@PathVariable("rollNo")String rollNo){
-			return new ResponseEntity<ArrayList<UpcomingCompanyDTO>>(studentService.viewUpcomingCompanies(rollNo),HttpStatus.OK);
+		public ResponseEntity<ArrayList<CompanyDTO>> viewUpcomingCompanies(@PathVariable("rollNo")String rollNo){
+			return new ResponseEntity<ArrayList<CompanyDTO>>(studentService.viewUpcomingCompanies(rollNo),HttpStatus.OK);
 		}
 
 }

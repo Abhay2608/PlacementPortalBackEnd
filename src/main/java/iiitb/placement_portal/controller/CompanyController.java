@@ -1,5 +1,6 @@
 package iiitb.placement_portal.controller;
 
+import iiitb.placement_portal.dto.CompanyDTO;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -32,7 +33,7 @@ public class CompanyController {
 	
 	//@GetMapping
 	@RequestMapping(method=RequestMethod.GET,value="/getAllCompanies")
-	public ResponseEntity<ArrayList<Company>> getAllCompanies(){
+	public ResponseEntity<ArrayList<CompanyDTO>> getAllCompanies(){
 		return new ResponseEntity<>(companyService.getAllCompanies(),HttpStatus.OK);
 	}
 	

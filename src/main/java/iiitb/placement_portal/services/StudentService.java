@@ -5,7 +5,7 @@ import java.lang.String;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import iiitb.placement_portal.dto.UpcomingCompanyDTO;
+import iiitb.placement_portal.dto.CompanyDTO;
 import iiitb.placement_portal.entity.CompanyContacts;
 import jdk.nashorn.internal.runtime.regexp.joni.ast.BackRefNode;
 import org.springframework.beans.CachedIntrospectionResults;
@@ -144,6 +144,7 @@ public class StudentService {
 		}*/
 		
 	}
+
 	public boolean checkPolicy(Student student, Company company, Boolean appliedFor[],MultipartFile file, String extension,String fileType){
 		System.out.println("inside policy");
 		for(int i=0;i<appliedFor.length;i++){
@@ -179,6 +180,7 @@ public class StudentService {
 		}
 		return false;
 	}
+
 	public boolean addFile(String rollNo,MultipartFile file, String extension, String type) {
 		boolean res=true;
 		if(file==null) {
@@ -202,15 +204,19 @@ public class StudentService {
 		return res;
 	}
 
-	public ArrayList<UpcomingCompanyDTO> viewUpcomingCompanies(String rollNo){
+	public ArrayList<CompanyDTO> viewUpcomingCompanies(String rollNo){
 		System.out.println(rollNo);
 		Student dbStudent = studentRepository.findByRollNo(rollNo.toUpperCase());
 		if(dbStudent == null){
 			dbStudent = studentRepository.findByRollNo(rollNo.toLowerCase());
 		}
 		System.out.println(dbStudent.getRollNo());
-		ArrayList<Company> companies = companyService.getAllCompanies();
-		ArrayList<UpcomingCompanyDTO> upcomingCompanyDTO = new ArrayList<>();
+		ArrayList<CompanyDTO> companiesDTO = companyService.getAllCompanies();
+		ArrayList<Company> companies = new ArrayList<>();
+		for(CompanyDTO c: companiesDTO){
+			companies.add(c.getCompany());
+		}
+		ArrayList<CompanyDTO> companyDTO = new ArrayList<>();
 		for(Company company : companies){
 			StringBuilder stringBuilder = new StringBuilder();
 			Boolean isEligible = false;
@@ -218,10 +224,10 @@ public class StudentService {
 				if(stringBuilder.toString().length() == 0)	{
 					isEligible = true;
 				}
-				upcomingCompanyDTO.add(new UpcomingCompanyDTO(isEligible, stringBuilder.toString(), company));
+				companyDTO.add(new CompanyDTO(isEligible, stringBuilder.toString(), company));
 			}
 		}
-		return  upcomingCompanyDTO;
+		return  companyDTO;
 	}
 
 	private boolean checkRequirement(Student student, Company company,StringBuilder stringBuilder){

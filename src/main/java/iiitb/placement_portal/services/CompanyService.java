@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Optional;
 
+import iiitb.placement_portal.dto.CompanyDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,18 +29,27 @@ public class CompanyService {
 	@Autowired
 	private CompanyContactsRepository companyContactsRepository;
 	
-	public ArrayList<Company> getAllCompanies(){
+	public ArrayList<CompanyDTO> getAllCompanies(){
 		Gson gson = new Gson();
-		ArrayList<Company> companies = new ArrayList<Company>();
+		ArrayList<CompanyDTO> companiesDTO = new ArrayList<CompanyDTO>();
 		Iterable<Company> iterable = companyRepository.findAll();
 		Iterator<Company> iterator=iterable.iterator();
 		while(iterator.hasNext()) {
-			companies.add(iterator.next());
+			Company company = iterator.next();
+			StringBuilder stringBuilder = new StringBuilder();
+			if(company.getType().get(0) == true)	stringBuilder.append("summer,");
+			if(company.getType().get(1) == true)	stringBuilder.append("intern,");
+			if(company.getType().get(2) == true)	stringBuilder.append("fulltime,");
+			if(company.getType().get(3) == true)	stringBuilder.append("intern and fulltime,");
+			if(stringBuilder.length() > 0){
+				stringBuilder.setLength(stringBuilder.length()-1);
+			}
+			companiesDTO.add(new CompanyDTO(true, "", stringBuilder.toString(), company));
 		}
-		for(Company d : companies) {
-			d.setContact(gson.fromJson(d.getContactInString(), new TypeToken<ArrayList<CompanyContacts>>() {}.getType()));
+		for(CompanyDTO d : companiesDTO) {
+			d.getCompany().setContact(gson.fromJson(d.getCompany().getContactInString(), new TypeToken<ArrayList<CompanyContacts>>() {}.getType()));
 		}
-		return companies;
+		return companiesDTO;
 	}
 
 	public boolean addCompany(Company company,MultipartFile file, String extension,String fileType) {
