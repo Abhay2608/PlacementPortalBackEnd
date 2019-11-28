@@ -234,6 +234,10 @@ public class StudentService {
 				if(stringBuilder.toString().length() == 0)	{
 					isEligible = true;
 				}
+
+				company.setContact(null);
+				company.setContactInString(null);
+
 				//companyDTO.add(new CompanyDTO(isEligible, stringBuilder.toString(), company));
 				resultantCompanyDTO.add(new CompanyDTO(isEligible, stringBuilder.toString(), "", company));
 			}
@@ -300,6 +304,10 @@ public class StudentService {
 				stringBuilder.setLength(stringBuilder.length() - 1);
 			}
 			System.out.println("Inside viewAppliedCompanies: " + stringBuilder);
+
+			company.setContact(null);
+			company.setContactInString(null);
+
 			CompanyDTO companyDTO1 = new CompanyDTO(true, "", stringBuilder.toString(), company);
 			System.out.println("CompanyDTO: " + companyDTO1.getComingFor());
 			companyDTOS.add(companyDTO1);

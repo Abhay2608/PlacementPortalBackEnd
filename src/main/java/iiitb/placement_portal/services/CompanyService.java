@@ -44,6 +44,11 @@ public class CompanyService {
 			if(stringBuilder.length() > 0){
 				stringBuilder.setLength(stringBuilder.length()-1);
 			}
+
+			company.setContact(null);
+			company.setContactInString(null);
+
+
 			companiesDTO.add(new CompanyDTO(true, "", stringBuilder.toString(), company));
 		}
 		for(CompanyDTO d : companiesDTO) {
