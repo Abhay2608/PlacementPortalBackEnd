@@ -5,14 +5,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import iiitb.placement_portal.dto.StudentDTO;
-import iiitb.placement_portal.entity.CompanyParticipation;
+import iiitb.placement_portal.entity.*;
 import iiitb.placement_portal.repository.CompanyParticipationRepository;
+import iiitb.placement_portal.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import iiitb.placement_portal.entity.Admin;
-import iiitb.placement_portal.entity.Student;
 import iiitb.placement_portal.repository.AdminRepository;
 import iiitb.placement_portal.repository.StudentRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +30,9 @@ public class AdminService {
 	private StudentRepository studentRepository;
 	@Autowired
 	private CompanyParticipationRepository companyParticipationRepository;
-	
+	@Autowired
+	private CompanyRepository companyRepository;
+
 	public boolean authenticateAdmin(Admin admin) {
 		boolean res = false;
 		try {
@@ -139,5 +144,23 @@ public class AdminService {
 			studentDTOS.add(studentDTO);
 		}
 		return studentDTOS;
+	}
+
+	public ArrayList<Company> getAllCompaniesAdmin(){
+		Gson gson = new Gson();
+		ArrayList<Company> companies = new ArrayList<Company>();
+		Iterable<Company> iterable = companyRepository.findAll();
+		Iterator<Company> iterator=iterable.iterator();
+
+		while(iterator.hasNext()) {
+			Company company = iterator.next();
+			companies.add(company);
+		}
+
+		for(Company company : companies) {
+			company.setContact(gson.fromJson(company.getContactInString(), new TypeToken<ArrayList<CompanyContacts>>() {}.getType()));
+		}
+
+		return companies;
 	}
 }

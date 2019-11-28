@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import iiitb.placement_portal.entity.Experience;
-import iiitb.placement_portal.entity.FilterDTO;
+import iiitb.placement_portal.dto.FilterDTO;
 import iiitb.placement_portal.repository.ExperienceRepository;
 
 
