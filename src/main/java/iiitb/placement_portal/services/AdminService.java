@@ -79,12 +79,34 @@ public class AdminService {
 
 	public boolean banStudent(String rollNo) {
 		boolean res = false;
-		try{Student s = studentRepository.findByRollNo(rollNo);
-		s.setBanned(true);
-		studentRepository.save(s);
-		return true;}
+		try{
+			Student student = studentRepository.findByRollNo(rollNo.toUpperCase());
+			if(student == null)	{
+				student = studentRepository.findByRollNo(rollNo.toLowerCase());
+			}
+			student.setBanned(true);
+			studentRepository.save(student);
+			return true;
+		}
 		catch(Exception e) {
-		return false;}
+			return false;
+		}
+	}
+
+	public boolean unbanStudent(String rollNo)	{
+		boolean res = false;
+		try{
+			Student student = studentRepository.findByRollNo(rollNo.toUpperCase());
+			if(student == null)	{
+				student = studentRepository.findByRollNo(rollNo.toLowerCase());
+			}
+			student.setBanned(false);
+			studentRepository.save(student);
+			return true;
+		}
+		catch (Exception e)	{
+			return  false;
+		}
 	}
 	
 

@@ -72,7 +72,7 @@ public class AdminController {
 		}
 	}
 	@RequestMapping(method=RequestMethod.POST,value="/banStudent")
-	public ResponseEntity<String> banStudent(@RequestParam("studentRollNo")String studentRollNo){
+	public ResponseEntity<String> banStudent(@RequestParam("rollNo")String studentRollNo){
 		boolean res = adminService.banStudent(studentRollNo);
 		if(res)
 		{
@@ -84,5 +84,16 @@ public class AdminController {
 		}
 	}
 
+	@RequestMapping(method=RequestMethod.POST,value="/unbanStudent")
+	public ResponseEntity<String> unbanStudent(@RequestParam("rollNo")String studentRollNo){
+		boolean res = adminService.unbanStudent(studentRollNo);
+		if(res == true)
+		{
+			return new ResponseEntity<>("student unbanned successful",HttpStatus.OK);
+		}
+		else{
+			return new ResponseEntity<>("student banned unsuccessful",HttpStatus.BAD_REQUEST);
+		}
+	}
 	
 }
