@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import iiitb.placement_portal.dto.UpcomingCompanyDTO;
 import iiitb.placement_portal.entity.CompanyContacts;
+import jdk.nashorn.internal.runtime.regexp.joni.ast.BackRefNode;
 import org.springframework.beans.CachedIntrospectionResults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,8 @@ public class StudentService {
 	@Autowired
 	private StudentRepository studentRepository;
 	@Autowired
+	private CompanyRepository companyRepository;
+	@Autowired
 	private iiitb.placement_portal.services.StorageService storageService;
 	@Autowired
 	private CompanyParticipationRepository companyParticipationRepository;
@@ -45,6 +48,7 @@ public class StudentService {
 
 		return students;
 	}
+
 	public boolean registerStudent(Student student) {
 		boolean res=true;
 		try {
@@ -113,47 +117,14 @@ public class StudentService {
 		return res;
 	}
 	
-	public boolean applyCompany(Student s, Company c, Boolean appliedFor[],MultipartFile file, String extension,String fileType) {
+	public boolean applyCompany(Student student, Company company, Boolean appliedFor[],MultipartFile file, String extension,String fileType) {
 		boolean res=true;
 		if(file==null) {
 			return false;
 		}
-	
-		ArrayList<String> courseRequirement = c.getCourseRequirement();
-		ArrayList<String> streamRequirement = c.getStreamRequirement();
-		Date closetime = c.getClosetime();
-		ArrayList<Boolean> type = c.getType();
-		boolean course=false,stream=false,date=false,appliedFlag=false,cgpa=false;
-		
-		if(c.getCgpaRequired() <= s.getCgpa()) {
-			cgpa = true;
-		}
-		for(String tmp : courseRequirement) {
-			if(tmp.equals(s.getCourse())) {
-				course = true;
-				break;
-			}
-		}
-		
-		for(String tmp : streamRequirement) {
-			if(tmp.equals(s.getStream())) {
-				stream = true;
-				break;
-			}
-		}
-		
-		for(int i=0;i<type.size();i++) {
-			appliedFor[i] = type.get(i) & appliedFor[i];
-			if(appliedFor[i] == true) {
-				appliedFlag = true;
-			}
-		}
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	    Date dateobj = new Date();
-		if(closetime.after(dateobj)) {
-			date = true;
-		}
-		if(course && stream && date && appliedFlag && cgpa) {
+		return checkPolicy(student,company,appliedFor,file,extension,fileType);
+
+		/*if(course && stream && date && appliedFlag && cgpa) {
 
 			Student stu=studentRepository.findByRollNo(s.getRollNo());
 			String documentLink = fileType + "_" + s.getRollNo() + "." + extension;
@@ -170,10 +141,44 @@ public class StudentService {
 		}
 		else {
 			return false;
-		}
+		}*/
 		
 	}
-	
+	public boolean checkPolicy(Student student, Company company, Boolean appliedFor[],MultipartFile file, String extension,String fileType){
+		System.out.println("inside policy");
+		for(int i=0;i<appliedFor.length;i++){
+			System.out.println(appliedFor[i]);
+		}
+		ArrayList<Boolean> companyType = company.getType();
+		boolean applyflag = true;
+
+
+		//policy for placement start
+		for(int i=0;i<appliedFor.length;i++){
+			if(companyType.get(i) != appliedFor[i]){
+				applyflag = false;
+				break;
+			}
+		}
+		//policy for placement end
+		System.out.println(applyflag);
+		if(applyflag == true){
+			boolean res;
+			Student stu=studentRepository.findByRollNo(student.getRollNo());
+			String documentLink = fileType + "_" + student.getRollNo() + "." + extension;
+			res=storageService.addFile(documentLink, file);
+			stu.setCv(documentLink);
+			studentRepository.save(stu);
+
+			CompanyParticipation companyParticipation = new CompanyParticipation();
+			companyParticipation.setAppliedFor(appliedFor);
+			companyParticipation.setCompanyId(company.getId());
+			companyParticipation.setStudentId(student.getId());
+			companyParticipationRepository.save(companyParticipation);
+			return true;
+		}
+		return false;
+	}
 	public boolean addFile(String rollNo,MultipartFile file, String extension, String type) {
 		boolean res=true;
 		if(file==null) {

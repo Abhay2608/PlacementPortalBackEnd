@@ -81,23 +81,23 @@ public class StudentController {
 		
 		@RequestMapping(method=RequestMethod.POST,value="/apply")
 		public ResponseEntity<String> applyCompany(@RequestParam("cv") MultipartFile cv,@RequestParam(value = "student") String s, @RequestParam(value = "company") String c,@RequestParam(value = "appliedFor") String aF){
-		
+
 			Gson gson = new Gson();
-			Student student = gson.fromJson(s, Student.class); 
-			Company company = gson.fromJson(c, Company.class); 
-			Boolean appliedFor[] = gson.fromJson(aF, Boolean[].class); 
+			Student student = gson.fromJson(s, Student.class);
+			Company company = gson.fromJson(c, Company.class);
+			Boolean appliedFor[] = gson.fromJson(aF, Boolean[].class);
 
 			String extension = FilenameUtils.getExtension(cv.getOriginalFilename());
 			if(!(extension.equals("pdf") )) {
 				return new ResponseEntity<>("please upload pdf file",HttpStatus.BAD_REQUEST);
 			}
 
-			
+
 			if(studentService.applyCompany(student, company, appliedFor,cv,extension,"cv") == true)
 			{
 				return new ResponseEntity<>("Company application successfull",HttpStatus.OK);
 			}
-			else 
+			else
 			{
 				return new ResponseEntity<>("Company application failed",HttpStatus.BAD_REQUEST);
 			}
