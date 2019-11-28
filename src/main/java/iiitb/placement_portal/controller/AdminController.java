@@ -71,6 +71,18 @@ public class AdminController {
 			return new ResponseEntity<>("login denied",HttpStatus.UNAUTHORIZED);
 		}
 	}
+	@RequestMapping(method=RequestMethod.POST,value="/banStudent")
+	public ResponseEntity<String> banStudent(@RequestParam("studentRollNo")String studentRollNo){
+		boolean res = adminService.banStudent(studentRollNo);
+		if(res)
+		{
+			return new ResponseEntity<>("student banned successful",HttpStatus.OK);
+		}
+		else
+		{
+			return new ResponseEntity<>("student banned unsuccessful",HttpStatus.BAD_REQUEST);
+		}
+	}
 
 	
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import iiitb.placement_portal.entity.Admin;
 import iiitb.placement_portal.entity.Student;
 import iiitb.placement_portal.repository.AdminRepository;
+import iiitb.placement_portal.repository.StudentRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -19,6 +20,8 @@ public class AdminService {
 	
 	@Autowired
 	private AdminRepository adminRepository;
+	@Autowired
+	private StudentRepository studentRepository;
 	
 	public boolean authenticateAdmin(Admin admin) {
 		boolean res = false;
@@ -72,6 +75,16 @@ public class AdminService {
 			return admin;
 		}
 		else return null;
+	}
+
+	public boolean banStudent(String rollNo) {
+		boolean res = false;
+		try{Student s = studentRepository.findByRollNo(rollNo);
+		s.setBanned(true);
+		studentRepository.save(s);
+		return true;}
+		catch(Exception e) {
+		return false;}
 	}
 	
 
