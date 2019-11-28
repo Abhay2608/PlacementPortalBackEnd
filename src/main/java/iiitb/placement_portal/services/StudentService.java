@@ -224,7 +224,8 @@ public class StudentService {
 				if(stringBuilder.toString().length() == 0)	{
 					isEligible = true;
 				}
-				companyDTO.add(new CompanyDTO(isEligible, stringBuilder.toString(), company));
+				//companyDTO.add(new CompanyDTO(isEligible, stringBuilder.toString(), company));
+				companiesDTO.add(new CompanyDTO(isEligible, stringBuilder.toString(), "", company));
 			}
 		}
 		return  companyDTO;
