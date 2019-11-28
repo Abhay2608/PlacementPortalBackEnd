@@ -1,4 +1,4 @@
-package iiitb.placement_portal.entity;
+package iiitb.placement_portal.dto;
 
 
 public class FilterDTO {

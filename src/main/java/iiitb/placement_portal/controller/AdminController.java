@@ -2,6 +2,8 @@ package iiitb.placement_portal.controller;
 
 import java.util.ArrayList;
 
+import iiitb.placement_portal.dto.StudentDTO;
+import iiitb.placement_portal.entity.Company;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -59,6 +61,7 @@ public class AdminController {
 		}
 		
 	}
+
 	@RequestMapping(method=RequestMethod.POST,value="/login")
 	public ResponseEntity<String> authenticateAdmin(@RequestBody Admin admin){
 		boolean res = adminService.authenticateAdmin(admin);
@@ -71,8 +74,9 @@ public class AdminController {
 			return new ResponseEntity<>("login denied",HttpStatus.UNAUTHORIZED);
 		}
 	}
+
 	@RequestMapping(method=RequestMethod.POST,value="/banStudent")
-	public ResponseEntity<String> banStudent(@RequestParam("studentRollNo")String studentRollNo){
+	public ResponseEntity<String> banStudent(@RequestParam("rollNo")String studentRollNo){
 		boolean res = adminService.banStudent(studentRollNo);
 		if(res)
 		{
@@ -84,5 +88,30 @@ public class AdminController {
 		}
 	}
 
-	
+	@RequestMapping(method=RequestMethod.POST,value="/unbanStudent")
+	public ResponseEntity<String> unbanStudent(@RequestParam("rollNo")String studentRollNo){
+		boolean res = adminService.unbanStudent(studentRollNo);
+		if(res == true)
+		{
+			return new ResponseEntity<>("student unbanned successful",HttpStatus.OK);
+		}
+		else{
+			return new ResponseEntity<>("student banned unsuccessful",HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@RequestMapping(method=RequestMethod.GET,value="/getAllBannedStudents")
+	public ResponseEntity<ArrayList<Student>> getAllBannedStudents(){
+		return new ResponseEntity<>(adminService.getAllBannedStudents(),HttpStatus.OK);
+	}
+
+	@RequestMapping(method=RequestMethod.GET,value="/getAllAppliedStudentsForCompany/{id}")
+	public ResponseEntity<ArrayList<StudentDTO>> getAllAppliedStudentsForCompany(@PathVariable("id")Integer id){
+		return new ResponseEntity<ArrayList<StudentDTO>>(adminService.getAllAppliedStudentsForCompany(id),HttpStatus.OK);
+	}
+
+	@RequestMapping(method=RequestMethod.GET,value="/getAllCompaniesAdmin")
+	public ResponseEntity<ArrayList<Company>> getAllCompaniesAdmin(){
+		return new ResponseEntity<>(adminService.getAllCompaniesAdmin(),HttpStatus.OK);
+	}
 }

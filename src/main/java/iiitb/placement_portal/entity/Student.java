@@ -543,5 +543,41 @@ public class Student {
 	public void setBanned(boolean banned) {
 		isBanned = banned;
 	}
+
+	@Override
+	public String toString() {
+		return "Student{" +
+				"id=" + id +
+				", rollNo='" + rollNo + '\'' +
+				", email='" + email + '\'' +
+				", password='" + password + '\'' +
+				", name='" + name + '\'' +
+				", phone='" + phone + '\'' +
+				", cgpa=" + cgpa +
+				", stream='" + stream + '\'' +
+				", course='" + course + '\'' +
+				", batch='" + batch + '\'' +
+				", placementYear='" + placementYear + '\'' +
+				", address='" + address + '\'' +
+				", pincode='" + pincode + '\'' +
+				", state='" + state + '\'' +
+				", nationality='" + nationality + '\'' +
+				", xBoard='" + xBoard + '\'' +
+				", xPercentage=" + xPercentage +
+				", xYear='" + xYear + '\'' +
+				", xiiBoard='" + xiiBoard + '\'' +
+				", xiiPercentage=" + xiiPercentage +
+				", xiiYear='" + xiiYear + '\'' +
+				", undergraduateUniversity='" + undergraduateUniversity + '\'' +
+				", undergraduateDegree='" + undergraduateDegree + '\'' +
+				", undergraduateYear='" + undergraduateYear + '\'' +
+				", undergraduatePercentage=" + undergraduatePercentage +
+				", gender='" + gender + '\'' +
+				", dob=" + dob +
+				", image='" + image + '\'' +
+				", cv='" + cv + '\'' +
+				", isBanned=" + isBanned +
+				'}';
+	}
 }
 

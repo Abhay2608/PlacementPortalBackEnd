@@ -5,11 +5,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import iiitb.placement_portal.dto.StudentDTO;
+import iiitb.placement_portal.entity.*;
+import iiitb.placement_portal.repository.CompanyParticipationRepository;
+import iiitb.placement_portal.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import iiitb.placement_portal.entity.Admin;
-import iiitb.placement_portal.entity.Student;
 import iiitb.placement_portal.repository.AdminRepository;
 import iiitb.placement_portal.repository.StudentRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +28,11 @@ public class AdminService {
 	private AdminRepository adminRepository;
 	@Autowired
 	private StudentRepository studentRepository;
-	
+	@Autowired
+	private CompanyParticipationRepository companyParticipationRepository;
+	@Autowired
+	private CompanyRepository companyRepository;
+
 	public boolean authenticateAdmin(Admin admin) {
 		boolean res = false;
 		try {
@@ -49,7 +59,6 @@ public class AdminService {
 		}
 		return res;
 	}
-	
 
 	public ArrayList<Admin> getAllAdmin(){
 		ArrayList<Admin> admin=new ArrayList<Admin>();
@@ -79,14 +88,79 @@ public class AdminService {
 
 	public boolean banStudent(String rollNo) {
 		boolean res = false;
-		try{Student s = studentRepository.findByRollNo(rollNo);
-		s.setBanned(true);
-		studentRepository.save(s);
-		return true;}
+		try{
+			Student student = studentRepository.findByRollNo(rollNo.toUpperCase());
+			if(student == null)	{
+				student = studentRepository.findByRollNo(rollNo.toLowerCase());
+			}
+			student.setBanned(true);
+			studentRepository.save(student);
+			return true;
+		}
 		catch(Exception e) {
-		return false;}
+			return false;
+		}
 	}
-	
 
+	public boolean unbanStudent(String rollNo)	{
+		boolean res = false;
+		try{
+			Student student = studentRepository.findByRollNo(rollNo.toUpperCase());
+			if(student == null)	{
+				student = studentRepository.findByRollNo(rollNo.toLowerCase());
+			}
+			student.setBanned(false);
+			studentRepository.save(student);
+			return true;
+		}
+		catch (Exception e)	{
+			return  false;
+		}
+	}
 
+	public ArrayList<Student> getAllBannedStudents(){
+		ArrayList<Student> bannedStudent = new ArrayList<>();
+		Iterable<Student> iterable = studentRepository.findAll();
+		Iterator<Student> iterator=iterable.iterator();
+		while(iterator.hasNext()) {
+			Student student = iterator.next();
+			if(student.isBanned() == true){
+				bannedStudent.add(student);
+			}
+		}
+		return bannedStudent;
+	}
+
+	public ArrayList<StudentDTO> getAllAppliedStudentsForCompany(Integer id){
+		ArrayList<StudentDTO> studentDTOS = new ArrayList<>();
+		ArrayList<CompanyParticipation> companyParticipations = companyParticipationRepository.findAllByCompanyId(id);
+
+		System.out.println(companyParticipations.size());
+
+		for(CompanyParticipation companyParticipation : companyParticipations){
+			Student student = studentRepository.findById(companyParticipation.getStudentId()).get();
+			System.out.println(student.getName());
+			StudentDTO studentDTO = new StudentDTO(student.getName(), student.getEmail(), student.getRollNo(), companyParticipation.getAppliedFor());
+			studentDTOS.add(studentDTO);
+		}
+		return studentDTOS;
+	}
+
+	public ArrayList<Company> getAllCompaniesAdmin(){
+		Gson gson = new Gson();
+		ArrayList<Company> companies = new ArrayList<Company>();
+		Iterable<Company> iterable = companyRepository.findAll();
+		Iterator<Company> iterator=iterable.iterator();
+
+		while(iterator.hasNext()) {
+			Company company = iterator.next();
+			companies.add(company);
+		}
+
+		for(Company company : companies) {
+			company.setContact(gson.fromJson(company.getContactInString(), new TypeToken<ArrayList<CompanyContacts>>() {}.getType()));
+		}
+
+		return companies;
+	}
 }

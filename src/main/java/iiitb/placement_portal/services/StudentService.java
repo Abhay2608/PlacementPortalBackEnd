@@ -5,7 +5,7 @@ import java.lang.String;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import iiitb.placement_portal.dto.UpcomingCompanyDTO;
+import iiitb.placement_portal.dto.CompanyDTO;
 import iiitb.placement_portal.entity.CompanyContacts;
 import jdk.nashorn.internal.runtime.regexp.joni.ast.BackRefNode;
 import org.springframework.beans.CachedIntrospectionResults;
@@ -52,6 +52,7 @@ public class StudentService {
 	public boolean registerStudent(Student student) {
 		boolean res=true;
 		try {
+			student.setBanned(false);
 			studentRepository.save(student);
 		}catch(Exception e) {
 			res=false;
@@ -144,25 +145,34 @@ public class StudentService {
 		}*/
 		
 	}
+
 	public boolean checkPolicy(Student student, Company company, Boolean appliedFor[],MultipartFile file, String extension,String fileType){
-		System.out.println("inside policy");
-		for(int i=0;i<appliedFor.length;i++){
-			System.out.println(appliedFor[i]);
+		CompanyParticipation companyParticipationCheck = companyParticipationRepository.findByStudentIdAndCompanyId(student.getId(), company.getId());
+		if(companyParticipationCheck != null){
+			System.out.println("already applied");
+			return false;
 		}
+		//System.out.println("inside policy");
+		/*for(int i=0;i<appliedFor.length;i++){
+			System.out.println(appliedFor[i]);
+		}*/
+		/*System.out.println(appliedFor[0]);System.out.println(appliedFor[1]);System.out.println(appliedFor[2]);System.out.println(appliedFor[3]);
+
+		System.out.println(student.toString());
+		System.out.println();
+		System.out.println(company.toString());*/
 		ArrayList<Boolean> companyType = company.getType();
 		boolean applyflag = true;
 
-
 		//policy for placement start
 		for(int i=0;i<appliedFor.length;i++){
-			if(companyType.get(i) != appliedFor[i]){
+			if(companyType.get(i) != appliedFor[i].booleanValue()){
 				applyflag = false;
 				break;
 			}
 		}
 		//policy for placement end
-		System.out.println(applyflag);
-		if(applyflag == true){
+		if(applyflag == true && student.isBanned() == false){
 			boolean res;
 			Student stu=studentRepository.findByRollNo(student.getRollNo());
 			String documentLink = fileType + "_" + student.getRollNo() + "." + extension;
@@ -179,6 +189,7 @@ public class StudentService {
 		}
 		return false;
 	}
+
 	public boolean addFile(String rollNo,MultipartFile file, String extension, String type) {
 		boolean res=true;
 		if(file==null) {
@@ -202,32 +213,55 @@ public class StudentService {
 		return res;
 	}
 
-	public ArrayList<UpcomingCompanyDTO> viewUpcomingCompanies(String rollNo){
-		System.out.println(rollNo);
+	public ArrayList<CompanyDTO> viewUpcomingCompanies(Integer id){
+		Student student = studentRepository.findById(id).get();
+		System.out.println("Inside viewUpcomingCompanies(Integer id): " + student.getRollNo());
+		return viewUpcomingCompanies(student.getRollNo());
+	}
+
+	public ArrayList<CompanyDTO> viewUpcomingCompanies(String rollNo){
+		ArrayList<CompanyDTO> resultantCompanyDTO = new ArrayList<>();
 		Student dbStudent = studentRepository.findByRollNo(rollNo.toUpperCase());
 		if(dbStudent == null){
 			dbStudent = studentRepository.findByRollNo(rollNo.toLowerCase());
 		}
-		System.out.println(dbStudent.getRollNo());
-		ArrayList<Company> companies = companyService.getAllCompanies();
-		ArrayList<UpcomingCompanyDTO> upcomingCompanyDTO = new ArrayList<>();
+		ArrayList<CompanyDTO> companyDTO = companyService.getAllCompanies();
+
+		System.out.println(companyDTO.size());
+		ArrayList<Company> companies = new ArrayList<>();
+		for(CompanyDTO c: companyDTO){
+			companies.add(c.getCompany());
+		}
+
 		for(Company company : companies){
+
 			StringBuilder stringBuilder = new StringBuilder();
 			Boolean isEligible = false;
 			if(checkRequirement(dbStudent,company,stringBuilder) == true){
+				System.out.println(company.getName());
 				if(stringBuilder.toString().length() == 0)	{
 					isEligible = true;
 				}
-				upcomingCompanyDTO.add(new UpcomingCompanyDTO(isEligible, stringBuilder.toString(), company));
+
+				company.setContact(null);
+				company.setContactInString(null);
+
+				//companyDTO.add(new CompanyDTO(isEligible, stringBuilder.toString(), company));
+				resultantCompanyDTO.add(new CompanyDTO(isEligible, stringBuilder.toString(), "", company));
 			}
 		}
-		return  upcomingCompanyDTO;
+		return  resultantCompanyDTO;
 	}
 
 	private boolean checkRequirement(Student student, Company company,StringBuilder stringBuilder){
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date dateobj = new Date();
 		if(company.getClosetime().after(dateobj)) {
+
+			if(student.isBanned() == true){
+				stringBuilder.append("Student banned for placements.\n");
+			}
+
 			boolean cgpa = false,course = false, stream = false;
 			if((int)(company.getCgpaRequired()*100) > (int)(student.getCgpa()*100)){
 				stringBuilder.append("CGPA criteria not satisfied.\n");
@@ -235,7 +269,6 @@ public class StudentService {
 			else{
 				cgpa = true;
 			}
-
 
 			ArrayList<String> courseRequirements = company.getCourseRequirement();
 			ArrayList<String> streamRequirements = company.getStreamRequirement();
@@ -265,5 +298,32 @@ public class StudentService {
 			return true;
 		}
 		return false;
+	}
+
+	public ArrayList<CompanyDTO> viewAppliedCompanies(Integer id){
+		//Integer id1 = Integer.parseInt(id);
+		ArrayList<CompanyDTO> companyDTOS = new ArrayList<>();
+		ArrayList<CompanyParticipation> companyParticipation = companyParticipationRepository.findAllByStudentId(id);
+		for(CompanyParticipation companyParticipation1 : companyParticipation){
+			Company company = companyRepository.findById(companyParticipation1.getCompanyId()).get();
+			StringBuilder stringBuilder = new StringBuilder();
+			Boolean appliedFor[] = companyParticipation1.getAppliedFor();
+			if(appliedFor[0] == true)	stringBuilder.append("summer,");
+			if(appliedFor[1] == true)	stringBuilder.append("intern,");
+			if(appliedFor[2] == true)	stringBuilder.append("fulltime,");
+			if(appliedFor[3] == true)	stringBuilder.append("intern and fulltime,");
+			if(stringBuilder.length() > 0) {
+				stringBuilder.setLength(stringBuilder.length() - 1);
+			}
+			System.out.println("Inside viewAppliedCompanies: " + stringBuilder);
+
+			company.setContact(null);
+			company.setContactInString(null);
+
+			CompanyDTO companyDTO1 = new CompanyDTO(true, "", stringBuilder.toString(), company);
+			System.out.println("CompanyDTO: " + companyDTO1.getComingFor());
+			companyDTOS.add(companyDTO1);
+		}
+		return companyDTOS;
 	}
 }
