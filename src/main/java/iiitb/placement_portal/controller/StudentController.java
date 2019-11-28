@@ -2,6 +2,8 @@ package iiitb.placement_portal.controller;
 
 
 import iiitb.placement_portal.dto.CompanyDTO;
+import iiitb.placement_portal.repository.CompanyRepository;
+import iiitb.placement_portal.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +27,11 @@ public class StudentController {
 
 		@Autowired
 		private StudentService studentService;
-		
+		@Autowired
+		private StudentRepository studentRepository;
+		@Autowired
+		private CompanyRepository companyRepository;
+
 		@PostMapping(value="/register")
 		public ResponseEntity<String> registerStudent(@RequestBody Student student){
 			if(studentService.registerStudent(student)==true) {
@@ -80,11 +86,15 @@ public class StudentController {
 		}
 		
 		@RequestMapping(method=RequestMethod.POST,value="/apply")
-		public ResponseEntity<String> applyCompany(@RequestParam("cv") MultipartFile cv,@RequestParam(value = "student") String s, @RequestParam(value = "company") String c,@RequestParam(value = "appliedFor") String aF){
+		public ResponseEntity<String> applyCompany(@RequestParam("cv") MultipartFile cv,@RequestParam(value = "studentId") Integer studentId, @RequestParam(value = "companyId") Integer companyId,@RequestParam(value = "appliedFor") String aF){
 
 			Gson gson = new Gson();
-			Student student = gson.fromJson(s, Student.class);
-			Company company = gson.fromJson(c, Company.class);
+			//Student student = gson.fromJson(s, Student.class);
+			//Company company = gson.fromJson(c, Company.class);
+
+			Student student = studentRepository.findById(studentId).get();
+			System.out.println("company ID :" + companyId);
+			Company company = companyRepository.findById(companyId).get();
 			Boolean appliedFor[] = gson.fromJson(aF, Boolean[].class);
 
 			String extension = FilenameUtils.getExtension(cv.getOriginalFilename());

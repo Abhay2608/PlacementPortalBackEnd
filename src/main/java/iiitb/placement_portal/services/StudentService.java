@@ -147,23 +147,31 @@ public class StudentService {
 	}
 
 	public boolean checkPolicy(Student student, Company company, Boolean appliedFor[],MultipartFile file, String extension,String fileType){
-		System.out.println("inside policy");
-		for(int i=0;i<appliedFor.length;i++){
-			System.out.println(appliedFor[i]);
+		CompanyParticipation companyParticipationCheck = companyParticipationRepository.findByStudentIdAndCompanyId(student.getId(), company.getId());
+		if(companyParticipationCheck != null){
+			System.out.println("already applied");
+			return false;
 		}
+		//System.out.println("inside policy");
+		/*for(int i=0;i<appliedFor.length;i++){
+			System.out.println(appliedFor[i]);
+		}*/
+		/*System.out.println(appliedFor[0]);System.out.println(appliedFor[1]);System.out.println(appliedFor[2]);System.out.println(appliedFor[3]);
+
+		System.out.println(student.toString());
+		System.out.println();
+		System.out.println(company.toString());*/
 		ArrayList<Boolean> companyType = company.getType();
 		boolean applyflag = true;
 
-
 		//policy for placement start
 		for(int i=0;i<appliedFor.length;i++){
-			if(companyType.get(i) != appliedFor[i]){
+			if(companyType.get(i) != appliedFor[i].booleanValue()){
 				applyflag = false;
 				break;
 			}
 		}
 		//policy for placement end
-		System.out.println(applyflag);
 		if(applyflag == true && student.isBanned() == false){
 			boolean res;
 			Student stu=studentRepository.findByRollNo(student.getRollNo());
