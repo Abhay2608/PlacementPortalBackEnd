@@ -7,6 +7,33 @@ public class CompanyDTO {
     private String nonEligibiltyReason;
     private String comingFor;
     private Company company;
+    private boolean isApplied;
+    private boolean isExpired;
+
+    public boolean isApplied() {
+        return isApplied;
+    }
+
+    public void setApplied(boolean applied) {
+        isApplied = applied;
+    }
+
+    public boolean isExpired() {
+        return isExpired;
+    }
+
+    public void setExpired(boolean expired) {
+        isExpired = expired;
+    }
+
+    public CompanyDTO(boolean isEligible, String nonEligibiltyReason, String comingFor, Company company, boolean isApplied, boolean isExpired) {
+        this.isEligible = isEligible;
+        this.nonEligibiltyReason = nonEligibiltyReason;
+        this.comingFor = comingFor;
+        this.company = company;
+        this.isApplied = isApplied;
+        this.isExpired = isExpired;
+    }
 
     public CompanyDTO(boolean isEligible, String nonEligibiltyReason, Company company) {
         this.isEligible = isEligible;
