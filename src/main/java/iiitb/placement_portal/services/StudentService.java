@@ -164,7 +164,7 @@ public class StudentService {
 		}
 		//policy for placement end
 		System.out.println(applyflag);
-		if(applyflag == true){
+		if(applyflag == true && student.isBanned() == false){
 			boolean res;
 			Student stu=studentRepository.findByRollNo(student.getRollNo());
 			String documentLink = fileType + "_" + student.getRollNo() + "." + extension;
@@ -249,6 +249,11 @@ public class StudentService {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date dateobj = new Date();
 		if(company.getClosetime().after(dateobj)) {
+
+			if(student.isBanned() == true){
+				stringBuilder.append("Student banned for placements.\n");
+			}
+
 			boolean cgpa = false,course = false, stream = false;
 			if((int)(company.getCgpaRequired()*100) > (int)(student.getCgpa()*100)){
 				stringBuilder.append("CGPA criteria not satisfied.\n");
@@ -256,7 +261,6 @@ public class StudentService {
 			else{
 				cgpa = true;
 			}
-
 
 			ArrayList<String> courseRequirements = company.getCourseRequirement();
 			ArrayList<String> streamRequirements = company.getStreamRequirement();
