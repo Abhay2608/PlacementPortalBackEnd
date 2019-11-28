@@ -50,9 +50,6 @@ public class Company {
 		this.profile = profile;
 	}
 
-	public Company() {
-	}
-
 	public Integer getId() {
 		return id;
 	}
