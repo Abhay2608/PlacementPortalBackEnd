@@ -52,6 +52,7 @@ public class StudentService {
 	public boolean registerStudent(Student student) {
 		boolean res=true;
 		try {
+			student.setBanned(false);
 			studentRepository.save(student);
 		}catch(Exception e) {
 			res=false;
@@ -272,5 +273,28 @@ public class StudentService {
 			return true;
 		}
 		return false;
+	}
+
+	public ArrayList<CompanyDTO> viewAppliedCompanies(String id){
+		Integer id1 = Integer.parseInt(id);
+		ArrayList<CompanyDTO> companyDTOS = new ArrayList<>();
+		ArrayList<CompanyParticipation> companyParticipation = companyParticipationRepository.findAllByStudentId(id1);
+		for(CompanyParticipation companyParticipation1 : companyParticipation){
+			Company company = companyRepository.findById(companyParticipation1.getCompanyId()).get();
+			StringBuilder stringBuilder = new StringBuilder();
+			Boolean appliedFor[] = companyParticipation1.getAppliedFor();
+			if(appliedFor[0] == true)	stringBuilder.append("summer,");
+			if(appliedFor[1] == true)	stringBuilder.append("intern,");
+			if(appliedFor[2] == true)	stringBuilder.append("fulltime,");
+			if(appliedFor[3] == true)	stringBuilder.append("intern and fulltime,");
+			if(stringBuilder.length() > 0) {
+				stringBuilder.setLength(stringBuilder.length() - 1);
+			}
+			System.out.println("Inside viewAppliedCompanies: " + stringBuilder);
+			CompanyDTO companyDTO1 = new CompanyDTO(true, "", stringBuilder.toString(), company);
+			System.out.println("CompanyDTO: " + companyDTO1.getComingFor());
+			companyDTOS.add(companyDTO1);
+		}
+		return companyDTOS;
 	}
 }

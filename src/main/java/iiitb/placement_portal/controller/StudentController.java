@@ -137,4 +137,8 @@ public class StudentController {
 			return new ResponseEntity<ArrayList<CompanyDTO>>(studentService.viewUpcomingCompanies(rollNo),HttpStatus.OK);
 		}
 
+		@RequestMapping(method=RequestMethod.GET,value = "/viewAppliedCompanies/{id}")
+		public ResponseEntity<ArrayList<CompanyDTO>> viewAppliedCompanies(@PathVariable("id")String id){
+			return new ResponseEntity<ArrayList<CompanyDTO>>(studentService.viewAppliedCompanies(id),HttpStatus.OK);
+		}
 }

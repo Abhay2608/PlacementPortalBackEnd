@@ -4,6 +4,8 @@ import org.springframework.data.repository.CrudRepository;
 
 import iiitb.placement_portal.entity.CompanyParticipation;
 
-public interface CompanyParticipationRepository extends CrudRepository<CompanyParticipation, Integer> {
+import java.util.ArrayList;
 
+public interface CompanyParticipationRepository extends CrudRepository<CompanyParticipation, Integer> {
+    public ArrayList<CompanyParticipation> findAllByStudentId(Integer studentId);
 }

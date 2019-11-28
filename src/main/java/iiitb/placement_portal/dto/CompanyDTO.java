@@ -24,6 +24,14 @@ public class CompanyDTO {
     public CompanyDTO() {
     }
 
+    public String getComingFor() {
+        return comingFor;
+    }
+
+    public void setComingFor(String comingFor) {
+        this.comingFor = comingFor;
+    }
+
     public boolean isEligible() {
         return isEligible;
     }
