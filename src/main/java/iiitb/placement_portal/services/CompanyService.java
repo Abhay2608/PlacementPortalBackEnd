@@ -93,7 +93,11 @@ public class CompanyService {
 		}
 		return res;
 	}
-	
+
+	public boolean deleteCompany(Integer id){
+		companyRepository.deleteById(id);
+		return true;
+	}
 //	public boolean addFile(String rollNo,MultipartFile file, String extension, String type) {
 //		boolean res=true;
 //		if(file==null) {

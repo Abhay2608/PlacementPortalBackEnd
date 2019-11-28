@@ -3,14 +3,7 @@ package iiitb.placement_portal.controller;
 import iiitb.placement_portal.dto.CompanyDTO;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
@@ -52,6 +45,17 @@ public class CompanyController {
 			return new ResponseEntity<>("company added",HttpStatus.OK);
 		}else {
 			return new ResponseEntity<>("error",HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@RequestMapping(method=RequestMethod.DELETE,value="/deleteCompany/{id}")
+	public ResponseEntity<String> deleteCompany(@PathVariable("id")Integer id){
+		if(companyService.deleteCompany(id) == true)
+		{
+			return new ResponseEntity<>("company removed successfully",HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<>("company remove failed",HttpStatus.BAD_REQUEST);
 		}
 	}
 }

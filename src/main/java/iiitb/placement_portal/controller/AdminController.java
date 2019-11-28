@@ -102,4 +102,6 @@ public class AdminController {
 	public ResponseEntity<ArrayList<Student>> getAllBannedStudents(){
 		return new ResponseEntity<>(adminService.getAllBannedStudents(),HttpStatus.OK);
 	}
+
+
 }
