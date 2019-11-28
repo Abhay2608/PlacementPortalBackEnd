@@ -2,6 +2,7 @@ package iiitb.placement_portal.controller;
 
 import java.util.ArrayList;
 
+import iiitb.placement_portal.dto.StudentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -103,5 +104,9 @@ public class AdminController {
 		return new ResponseEntity<>(adminService.getAllBannedStudents(),HttpStatus.OK);
 	}
 
+	@RequestMapping(method=RequestMethod.GET,value="/getAllAppliedStudentsForCompany/{id}")
+	public ResponseEntity<ArrayList<StudentDTO>> getAllAppliedStudentsForCompany(@PathVariable("id")Integer id){
+		return new ResponseEntity<ArrayList<StudentDTO>>(adminService.getAllAppliedStudentsForCompany(id),HttpStatus.OK);
+	}
 
 }

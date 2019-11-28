@@ -5,6 +5,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
+import iiitb.placement_portal.dto.StudentDTO;
+import iiitb.placement_portal.entity.CompanyParticipation;
+import iiitb.placement_portal.repository.CompanyParticipationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +25,8 @@ public class AdminService {
 	private AdminRepository adminRepository;
 	@Autowired
 	private StudentRepository studentRepository;
+	@Autowired
+	private CompanyParticipationRepository companyParticipationRepository;
 	
 	public boolean authenticateAdmin(Admin admin) {
 		boolean res = false;
@@ -121,4 +126,18 @@ public class AdminService {
 		return bannedStudent;
 	}
 
+	public ArrayList<StudentDTO> getAllAppliedStudentsForCompany(Integer id){
+		ArrayList<StudentDTO> studentDTOS = new ArrayList<>();
+		ArrayList<CompanyParticipation> companyParticipations = companyParticipationRepository.findAllByCompanyId(id);
+
+		System.out.println(companyParticipations.size());
+
+		for(CompanyParticipation companyParticipation : companyParticipations){
+			Student student = studentRepository.findById(companyParticipation.getStudentId()).get();
+			System.out.println(student.getName());
+			StudentDTO studentDTO = new StudentDTO(student.getName(), student.getEmail(), student.getRollNo(), companyParticipation.getAppliedFor());
+			studentDTOS.add(studentDTO);
+		}
+		return studentDTOS;
+	}
 }
