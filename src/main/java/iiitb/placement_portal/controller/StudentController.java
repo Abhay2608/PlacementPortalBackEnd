@@ -132,13 +132,13 @@ public class StudentController {
 			}
 		}
 
-		@RequestMapping(method=RequestMethod.GET,value="/viewUpcomingCompanies/{rollNo}")
-		public ResponseEntity<ArrayList<CompanyDTO>> viewUpcomingCompanies(@PathVariable("rollNo")String rollNo){
-			return new ResponseEntity<ArrayList<CompanyDTO>>(studentService.viewUpcomingCompanies(rollNo),HttpStatus.OK);
+		@RequestMapping(method=RequestMethod.GET,value="/viewUpcomingCompanies/{id}")
+		public ResponseEntity<ArrayList<CompanyDTO>> viewUpcomingCompanies(@PathVariable("id")Integer id){
+			return new ResponseEntity<ArrayList<CompanyDTO>>(studentService.viewUpcomingCompanies(id),HttpStatus.OK);
 		}
 
 		@RequestMapping(method=RequestMethod.GET,value = "/viewAppliedCompanies/{id}")
-		public ResponseEntity<ArrayList<CompanyDTO>> viewAppliedCompanies(@PathVariable("id")String id){
+		public ResponseEntity<ArrayList<CompanyDTO>> viewAppliedCompanies(@PathVariable("id")Integer id){
 			return new ResponseEntity<ArrayList<CompanyDTO>>(studentService.viewAppliedCompanies(id),HttpStatus.OK);
 		}
 }

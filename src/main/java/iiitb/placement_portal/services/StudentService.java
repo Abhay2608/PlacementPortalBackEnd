@@ -205,31 +205,40 @@ public class StudentService {
 		return res;
 	}
 
+	public ArrayList<CompanyDTO> viewUpcomingCompanies(Integer id){
+		Student student = studentRepository.findById(id).get();
+		System.out.println("Inside viewUpcomingCompanies(Integer id): " + student.getRollNo());
+		return viewUpcomingCompanies(student.getRollNo());
+	}
+
 	public ArrayList<CompanyDTO> viewUpcomingCompanies(String rollNo){
-		System.out.println(rollNo);
+		ArrayList<CompanyDTO> resultantCompanyDTO = new ArrayList<>();
 		Student dbStudent = studentRepository.findByRollNo(rollNo.toUpperCase());
 		if(dbStudent == null){
 			dbStudent = studentRepository.findByRollNo(rollNo.toLowerCase());
 		}
-		System.out.println(dbStudent.getRollNo());
-		ArrayList<CompanyDTO> companiesDTO = companyService.getAllCompanies();
+		ArrayList<CompanyDTO> companyDTO = companyService.getAllCompanies();
+
+		System.out.println(companyDTO.size());
 		ArrayList<Company> companies = new ArrayList<>();
-		for(CompanyDTO c: companiesDTO){
+		for(CompanyDTO c: companyDTO){
 			companies.add(c.getCompany());
 		}
-		ArrayList<CompanyDTO> companyDTO = new ArrayList<>();
+
 		for(Company company : companies){
+
 			StringBuilder stringBuilder = new StringBuilder();
 			Boolean isEligible = false;
 			if(checkRequirement(dbStudent,company,stringBuilder) == true){
+				System.out.println(company.getName());
 				if(stringBuilder.toString().length() == 0)	{
 					isEligible = true;
 				}
 				//companyDTO.add(new CompanyDTO(isEligible, stringBuilder.toString(), company));
-				companiesDTO.add(new CompanyDTO(isEligible, stringBuilder.toString(), "", company));
+				resultantCompanyDTO.add(new CompanyDTO(isEligible, stringBuilder.toString(), "", company));
 			}
 		}
-		return  companyDTO;
+		return  resultantCompanyDTO;
 	}
 
 	private boolean checkRequirement(Student student, Company company,StringBuilder stringBuilder){
@@ -275,10 +284,10 @@ public class StudentService {
 		return false;
 	}
 
-	public ArrayList<CompanyDTO> viewAppliedCompanies(String id){
-		Integer id1 = Integer.parseInt(id);
+	public ArrayList<CompanyDTO> viewAppliedCompanies(Integer id){
+		//Integer id1 = Integer.parseInt(id);
 		ArrayList<CompanyDTO> companyDTOS = new ArrayList<>();
-		ArrayList<CompanyParticipation> companyParticipation = companyParticipationRepository.findAllByStudentId(id1);
+		ArrayList<CompanyParticipation> companyParticipation = companyParticipationRepository.findAllByStudentId(id);
 		for(CompanyParticipation companyParticipation1 : companyParticipation){
 			Company company = companyRepository.findById(companyParticipation1.getCompanyId()).get();
 			StringBuilder stringBuilder = new StringBuilder();
