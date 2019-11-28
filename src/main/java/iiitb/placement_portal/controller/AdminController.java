@@ -59,6 +59,7 @@ public class AdminController {
 		}
 		
 	}
+
 	@RequestMapping(method=RequestMethod.POST,value="/login")
 	public ResponseEntity<String> authenticateAdmin(@RequestBody Admin admin){
 		boolean res = adminService.authenticateAdmin(admin);
@@ -71,6 +72,7 @@ public class AdminController {
 			return new ResponseEntity<>("login denied",HttpStatus.UNAUTHORIZED);
 		}
 	}
+
 	@RequestMapping(method=RequestMethod.POST,value="/banStudent")
 	public ResponseEntity<String> banStudent(@RequestParam("rollNo")String studentRollNo){
 		boolean res = adminService.banStudent(studentRollNo);
@@ -95,5 +97,9 @@ public class AdminController {
 			return new ResponseEntity<>("student banned unsuccessful",HttpStatus.BAD_REQUEST);
 		}
 	}
-	
+
+	@RequestMapping(method=RequestMethod.GET,value="/getAllBannedStudents")
+	public ResponseEntity<ArrayList<Student>> getAllBannedStudents(){
+		return new ResponseEntity<>(adminService.getAllBannedStudents(),HttpStatus.OK);
+	}
 }

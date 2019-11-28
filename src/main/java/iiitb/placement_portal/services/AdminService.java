@@ -49,7 +49,6 @@ public class AdminService {
 		}
 		return res;
 	}
-	
 
 	public ArrayList<Admin> getAllAdmin(){
 		ArrayList<Admin> admin=new ArrayList<Admin>();
@@ -108,7 +107,18 @@ public class AdminService {
 			return  false;
 		}
 	}
-	
 
+	public ArrayList<Student> getAllBannedStudents(){
+		ArrayList<Student> bannedStudent = new ArrayList<>();
+		Iterable<Student> iterable = studentRepository.findAll();
+		Iterator<Student> iterator=iterable.iterator();
+		while(iterator.hasNext()) {
+			Student student = iterator.next();
+			if(student.isBanned() == true){
+				bannedStudent.add(student);
+			}
+		}
+		return bannedStudent;
+	}
 
 }
