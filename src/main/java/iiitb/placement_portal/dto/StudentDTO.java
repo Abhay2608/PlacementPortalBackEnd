@@ -4,20 +4,20 @@ public class StudentDTO {
     private String name;
     private String email;
     private String rollNo;
-    private Boolean appliedFor[];
+    private String appliedFor;
 
-    public StudentDTO(String name, String email, String rollNo, Boolean[] appliedFor) {
+    public StudentDTO(String name, String email, String rollNo, String appliedFor) {
         this.name = name;
         this.email = email;
         this.rollNo = rollNo;
         this.appliedFor = appliedFor;
     }
 
-    public Boolean[] getAppliedFor() {
+    public String getAppliedFor() {
         return appliedFor;
     }
 
-    public void setAppliedFor(Boolean[] appliedFor) {
+    public void setAppliedFor(String appliedFor) {
         this.appliedFor = appliedFor;
     }
 
