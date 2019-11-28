@@ -20,9 +20,6 @@ public class ExperienceService {
 	
 	
 	public boolean addExperience(Experience experience) {
-		String date = experience.getDate();
-		String year = String.valueOf(date.charAt(0))+date.charAt(1)+date.charAt(2)+date.charAt(3);
-		experience.setYear(year);
 		boolean res=true;
 		try {
 			experienceRepository.save(experience);

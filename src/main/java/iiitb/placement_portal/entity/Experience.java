@@ -32,7 +32,6 @@ public class Experience {
     })
 	private Company company;
 	private String type;
-	private String date;
 	private String year;
 	private String title;
 	@Column(length=10485760)
@@ -42,14 +41,13 @@ public class Experience {
 		super();
 	}
 
-	public Experience(Integer id, Student student, Company company, String type, String date, String year,
+	public Experience(Integer id, Student student, Company company, String type, String year,
 			String title, String body) {
 		super();
 		this.id = id;
 		this.student = student;
 		this.company = company;
 		this.type = type;
-		this.date = date;
 		this.year = year;
 		this.title = title;
 		this.body = body;
@@ -95,13 +93,6 @@ public class Experience {
 		this.body = body;
 	}
 
-	public String getDate() {
-		return date;
-	}
-
-	public void setDate(String date) {
-		this.date = date;
-	}
 
 	public String getYear() {
 		return year;
@@ -121,8 +112,8 @@ public class Experience {
 
 	@Override
 	public String toString() {
-		return "Experience [id=" + id + ", student=" + student + ", company=" + company + ", type=" + type + ", date="
-				+ date + ", year=" + year + ", title=" + title + "]";
+		return "Experience [id=" + id + ", student=" + student + ", company=" + company + ", type=" + type +
+				", year=" + year + ", title=" + title + "]";
 	}
 
 	
