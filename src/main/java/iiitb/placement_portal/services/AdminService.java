@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import iiitb.placement_portal.entity.Admin;
+import iiitb.placement_portal.entity.Student;
 import iiitb.placement_portal.repository.AdminRepository;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,7 +20,19 @@ public class AdminService {
 	@Autowired
 	private AdminRepository adminRepository;
 	
-	
+	public boolean authenticateAdmin(Admin admin) {
+		boolean res = false;
+		try {
+			Admin dbAdmin = adminRepository.findByEmail(admin.getEmail());
+			if(dbAdmin.getPassword().equals(admin.getPassword())) {
+				res = true;
+			}
+		}catch(Exception e) {
+			System.out.println(e);
+		}
+		return res;
+	}
+
 	public boolean addAdmin(Admin admin) {
 		boolean res=true;
 		if(admin.getEmail()==null) {

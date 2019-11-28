@@ -6,4 +6,6 @@ import iiitb.placement_portal.entity.Student;
 import org.springframework.data.repository.CrudRepository;
 
 public interface AdminRepository extends CrudRepository<Admin, Integer> {
+	public Admin findByEmail(String email);
+
 }

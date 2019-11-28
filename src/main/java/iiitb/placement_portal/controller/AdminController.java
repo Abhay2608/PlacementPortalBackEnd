@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import iiitb.placement_portal.entity.Admin;
+import iiitb.placement_portal.entity.Student;
 import iiitb.placement_portal.services.AdminService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -58,6 +59,18 @@ public class AdminController {
 		}
 		
 	}
-	
+	@RequestMapping(method=RequestMethod.POST,value="/login")
+	public ResponseEntity<String> authenticateAdmin(@RequestBody Admin admin){
+		boolean res = adminService.authenticateAdmin(admin);
+		if(res)
+		{
+			return new ResponseEntity<>("login successful",HttpStatus.OK);
+		}
+		else
+		{
+			return new ResponseEntity<>("login denied",HttpStatus.UNAUTHORIZED);
+		}
+	}
+
 	
 }
