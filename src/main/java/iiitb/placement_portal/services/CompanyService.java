@@ -166,8 +166,32 @@ public class CompanyService {
 
 	public boolean updateCompany(Company company){
 		Company dbCompany = companyRepository.findById(company.getId()).get();
+
+		//if(company.getName()==null) {
+		//	return false;
+		//}
+		try {
+			Gson gson = new Gson();
+
+			if(company.getContact()!=null) {
+				String companyContactsInString = gson.toJson(company.getContact());
+				company.setContactInString(companyContactsInString);
+
+				ArrayList<CompanyContacts> companyContacts = company.getContact();
+				for (CompanyContacts c : companyContacts) {
+					c.setCompanyId(company.getId());
+					companyContactsRepository.save(c);
+				}
+
+				company.setContact(null);
+			}
+
 		company.setJd(dbCompany.getJd());
 		companyRepository.save(company);
+		}catch(Exception e) {
+			System.out.println(e);
+			return false;
+		}
 		return true;
 	}
 //	public boolean addFile(String rollNo,MultipartFile file, String extension, String type) {
