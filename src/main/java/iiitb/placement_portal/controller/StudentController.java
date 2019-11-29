@@ -74,15 +74,23 @@ public class StudentController {
 		}
 		
 		@RequestMapping(method=RequestMethod.PUT,value="/updatePassword")
-		public ResponseEntity<String> updatePassword(@RequestBody Student student){
-			if(studentService.updatePassword(student) == true)
-			{
-				return new ResponseEntity<>("Password updated successfully",HttpStatus.OK);
+		public ResponseEntity<String> updatePassword(@RequestParam("id")Integer id,@RequestParam("oldPassword")String oldPassword,@RequestParam("newPassword")String newPassword){
+			Student student = studentRepository.findById(id).get();
+			/*System.out.println(oldPassword);
+			System.out.println(student);
+			System.out.println(newPassword);*/
+			if(student.getPassword().equals(oldPassword)){
+				student.setPassword(newPassword);
+				if(studentService.updatePassword(student) == true)
+				{
+					return new ResponseEntity<>("Password updated successfully",HttpStatus.OK);
+				}
+				else
+				{
+					return new ResponseEntity<>("Password updation failed",HttpStatus.BAD_REQUEST);
+				}
 			}
-			else
-			{
-				return new ResponseEntity<>("Password updation failed",HttpStatus.BAD_REQUEST);
-			}
+			return new ResponseEntity<>("Student not found",HttpStatus.BAD_REQUEST);
 		}
 		
 		@RequestMapping(method=RequestMethod.POST,value="/apply")
@@ -112,7 +120,17 @@ public class StudentController {
 				return new ResponseEntity<>("Company application failed",HttpStatus.BAD_REQUEST);
 			}
 		}
-		
+
+		@RequestMapping(method=RequestMethod.DELETE,value="/withdrawApplication")
+		public ResponseEntity<String> withdrawApplication(@RequestParam(value="studentId")Integer studentId,@RequestParam(value="companyId")Integer companyId){
+			if(studentService.withdrawApplication(studentId,companyId) == true){
+				return new ResponseEntity<>("Application withdrawn",HttpStatus.OK);
+			}
+			else{
+				return new ResponseEntity<>("Application withdraw failed",HttpStatus.BAD_REQUEST);
+			}
+		}
+
 		@RequestMapping(method = RequestMethod.POST,value="/uploadImage")
 		public ResponseEntity<String> addImage(@RequestParam("rollNo") String rollNo,@RequestParam("file") MultipartFile photo) {			
 			String extension = FilenameUtils.getExtension(photo.getOriginalFilename());

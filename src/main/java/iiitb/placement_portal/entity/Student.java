@@ -1,17 +1,18 @@
 package iiitb.placement_portal.entity;
 
+import org.hibernate.validator.constraints.UniqueElements;
+
 import java.time.Year;
 import java.util.Date;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(uniqueConstraints={@UniqueConstraint(columnNames={"rollNo"})})
 public class Student {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
+	@Column(name = "rollNo")
 	private String rollNo;
 	private String email;
 	private String password;
@@ -41,6 +42,70 @@ public class Student {
 	private String image;
 	private String cv;
 	private boolean isBanned;
+	private String lastCompanyName;
+	private String lastCompanyDesignation;
+	private Integer numberOfMonths;
+
+	public Student(Integer id, String rollNo, String email, String password, String name, String phone, float cgpa, String stream, String course, String batch, String placementYear, String address, String pincode, String state, String nationality, String xBoard, float xPercentage, String xYear, String xiiBoard, float xiiPercentage, String xiiYear, String undergraduateUniversity, String undergraduateDegree, String undergraduateYear, float undergraduatePercentage, String gender, Date dob, String image, String cv, boolean isBanned, String lastCompanyName, String lastCompanyDesignation, Integer numberOfMonths) {
+		this.id = id;
+		this.rollNo = rollNo;
+		this.email = email;
+		this.password = password;
+		this.name = name;
+		this.phone = phone;
+		this.cgpa = cgpa;
+		this.stream = stream;
+		this.course = course;
+		this.batch = batch;
+		this.placementYear = placementYear;
+		this.address = address;
+		this.pincode = pincode;
+		this.state = state;
+		this.nationality = nationality;
+		this.xBoard = xBoard;
+		this.xPercentage = xPercentage;
+		this.xYear = xYear;
+		this.xiiBoard = xiiBoard;
+		this.xiiPercentage = xiiPercentage;
+		this.xiiYear = xiiYear;
+		this.undergraduateUniversity = undergraduateUniversity;
+		this.undergraduateDegree = undergraduateDegree;
+		this.undergraduateYear = undergraduateYear;
+		this.undergraduatePercentage = undergraduatePercentage;
+		this.gender = gender;
+		this.dob = dob;
+		this.image = image;
+		this.cv = cv;
+		this.isBanned = isBanned;
+		this.lastCompanyName = lastCompanyName;
+		this.lastCompanyDesignation = lastCompanyDesignation;
+		this.numberOfMonths = numberOfMonths;
+	}
+
+	public String getLastCompanyName() {
+		return lastCompanyName;
+	}
+
+	public void setLastCompanyName(String lastCompanyName) {
+		this.lastCompanyName = lastCompanyName;
+	}
+
+	public String getLastCompanyDesignation() {
+		return lastCompanyDesignation;
+	}
+
+	public void setLastCompanyDesignation(String lastCompanyDesignation) {
+		this.lastCompanyDesignation = lastCompanyDesignation;
+	}
+
+	public Integer getNumberOfMonths() {
+		return numberOfMonths;
+	}
+
+	public void setNumberOfMonths(Integer numberOfMonths) {
+		this.numberOfMonths = numberOfMonths;
+	}
+
 	/*public String getCv() {
 		return cv;
 	}

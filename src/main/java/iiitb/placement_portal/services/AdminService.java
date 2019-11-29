@@ -139,8 +139,18 @@ public class AdminService {
 
 		for(CompanyParticipation companyParticipation : companyParticipations){
 			Student student = studentRepository.findById(companyParticipation.getStudentId()).get();
-			System.out.println(student.getName());
-			StudentDTO studentDTO = new StudentDTO(student.getName(), student.getEmail(), student.getRollNo(), companyParticipation.getAppliedFor());
+			Boolean af[] = companyParticipation.getAppliedFor();
+			StringBuilder appliedFor = new StringBuilder();
+			if(af[0])	appliedFor.append("Summer,");
+			if(af[1])	appliedFor.append("Intern,");
+			if(af[2])	appliedFor.append("Fulltime,");
+			if(af[3])	appliedFor.append("Intern And Fulltime,");
+
+			if(appliedFor.length() > 0){
+				appliedFor.setLength(appliedFor.length()-1);
+			}
+			//StudentDTO studentDTO = new StudentDTO(student.getName(), student.getEmail(), student.getRollNo(), companyParticipation.getAppliedFor());
+			StudentDTO studentDTO = new StudentDTO(student.getName(), student.getEmail(), student.getRollNo(), appliedFor.toString());
 			studentDTOS.add(studentDTO);
 		}
 		return studentDTOS;

@@ -53,7 +53,13 @@ public class StudentService {
 		boolean res=true;
 		try {
 			student.setBanned(false);
-			studentRepository.save(student);
+			Student dbStudent = studentRepository.findByRollNo(student.getRollNo());
+			if(dbStudent == null) {
+				studentRepository.save(student);
+			}
+			else{
+				res = false;
+			}
 		}catch(Exception e) {
 			res=false;
 			System.out.println(e);
@@ -95,8 +101,9 @@ public class StudentService {
 		boolean res = false;
 		try {
 			Student stu = studentRepository.findByRollNo(student.getRollNo());
-			stu.setPassword(student.getPassword());
+			//stu.setPassword(student.getPassword());
 			studentRepository.save(stu);
+			res = true;
 		}
 		catch(Exception e) {
 			System.out.println(e);
@@ -225,7 +232,7 @@ public class StudentService {
 		if(dbStudent == null){
 			dbStudent = studentRepository.findByRollNo(rollNo.toLowerCase());
 		}
-		ArrayList<CompanyDTO> companyDTO = companyService.getAllCompanies();
+		ArrayList<CompanyDTO> companyDTO = companyService.getAllCompanies(dbStudent.getId());
 
 		System.out.println(companyDTO.size());
 		ArrayList<Company> companies = new ArrayList<>();
@@ -247,7 +254,7 @@ public class StudentService {
 				company.setContactInString(null);
 
 				//companyDTO.add(new CompanyDTO(isEligible, stringBuilder.toString(), company));
-				resultantCompanyDTO.add(new CompanyDTO(isEligible, stringBuilder.toString(), "", company));
+				resultantCompanyDTO.add(new CompanyDTO(isEligible, stringBuilder.toString(), "", company,isAppliedCheck(dbStudent, company),isExpiredCheck(company)));
 			}
 		}
 		return  resultantCompanyDTO;
@@ -274,11 +281,8 @@ public class StudentService {
 			ArrayList<String> streamRequirements = company.getStreamRequirement();
 
 			for(String tmp : courseRequirements){
-				//System.out.println("tmp:  " + tmp.toLowerCase() + "  student:  " + student.getCourse().toLowerCase() + "\n");
-				//System.out.println(tmp.toLowerCase().equals(student.getCourse().toLowerCase()));
 				if(tmp.toLowerCase().equals(student.getCourse().toLowerCase())){
 					course = true;
-					//System.out.println(course);
 					break;
 				}
 			}
@@ -302,6 +306,7 @@ public class StudentService {
 
 	public ArrayList<CompanyDTO> viewAppliedCompanies(Integer id){
 		//Integer id1 = Integer.parseInt(id);
+		Student student = studentRepository.findById(id).get();
 		ArrayList<CompanyDTO> companyDTOS = new ArrayList<>();
 		ArrayList<CompanyParticipation> companyParticipation = companyParticipationRepository.findAllByStudentId(id);
 		for(CompanyParticipation companyParticipation1 : companyParticipation){
@@ -320,10 +325,38 @@ public class StudentService {
 			company.setContact(null);
 			company.setContactInString(null);
 
-			CompanyDTO companyDTO1 = new CompanyDTO(true, "", stringBuilder.toString(), company);
+			//CompanyDTO companyDTO1 = new CompanyDTO(true, "", stringBuilder.toString(), company);
+			CompanyDTO companyDTO1 = new CompanyDTO(true, "", stringBuilder.toString(), company, isAppliedCheck(student, company), isExpiredCheck(company));
 			System.out.println("CompanyDTO: " + companyDTO1.getComingFor());
 			companyDTOS.add(companyDTO1);
 		}
 		return companyDTOS;
+	}
+
+	public boolean isAppliedCheck(Student student,Company company){
+		if(companyParticipationRepository.findByStudentIdAndCompanyId(student.getId(), company.getId()) == null){
+			return false;
+		}
+		return true;
+	}
+
+	public boolean isExpiredCheck(Company company){
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date dateobj = new Date();
+		if(company.getClosetime().after(dateobj)) {
+			return false;
+		}
+		return true;
+	}
+
+	public boolean withdrawApplication(Integer studentId,Integer companyId){
+		CompanyParticipation companyParticipation = companyParticipationRepository.findByStudentIdAndCompanyId(studentId, companyId);
+		if(companyParticipation != null) {
+			companyParticipationRepository.delete(companyParticipation);
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 }

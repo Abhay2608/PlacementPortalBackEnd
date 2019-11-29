@@ -25,9 +25,9 @@ public class CompanyController {
 	private CompanyService companyService;
 	
 	//@GetMapping
-	@RequestMapping(method=RequestMethod.GET,value="/getAllCompanies")
-	public ResponseEntity<ArrayList<CompanyDTO>> getAllCompanies(){
-		return new ResponseEntity<>(companyService.getAllCompanies(),HttpStatus.OK);
+	@RequestMapping(method=RequestMethod.GET,value="/getAllCompanies/{id}")
+	public ResponseEntity<ArrayList<CompanyDTO>> getAllCompanies(@PathVariable("id")Integer id){
+		return new ResponseEntity<>(companyService.getAllCompanies(id),HttpStatus.OK);
 	}
 	
 	//@PostMapping
