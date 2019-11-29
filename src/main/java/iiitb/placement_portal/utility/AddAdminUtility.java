@@ -9,13 +9,13 @@ class AddAdminUtility{
 	public static void main(String args[]){  
 	try{  
 		Class.forName("com.mysql.jdbc.Driver");  
-		Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/placementportal","ooad","root");  
+		Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/placementportal","root","root");
 
 		String query = "insert into admin(id,email,password)values(?,?,?)";
 		PreparedStatement preparedStmt = con.prepareStatement(query);
 		preparedStmt.setInt(1,4542);
-	    preparedStmt.setString(2,"roshni");
-	    preparedStmt.setString(3,"password" );
+	    preparedStmt.setString(2,"admin");
+	    preparedStmt.setString(3,"admin" );
 	    preparedStmt.executeUpdate();
 	    
 	    con.close();  
