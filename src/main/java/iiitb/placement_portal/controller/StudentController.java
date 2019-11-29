@@ -174,11 +174,11 @@ public class StudentController {
 		}
 
 		@RequestMapping(method=RequestMethod.GET,value="/resetPassword/{rollNo}")
-		public Student resetPassword(@PathVariable String rollNo) {
+		public ResponseEntity<String> resetPassword(@PathVariable String rollNo) {
 			System.out.println("resetPassword method called");
 			Student studentDetails = studentService.getStudentByRollNo(rollNo);
 			if (studentDetails == null)
-				return null;
+				return new ResponseEntity<String>("password could not be reset",HttpStatus.BAD_REQUEST);
 			String secret = generateRandomPassword();
 			studentDetails.setPassword(secret);
 			studentDetails.setRollNo(rollNo);
@@ -189,7 +189,7 @@ public class StudentController {
 					+"\n We have recieved your request for resetting password."
 					+ "\n Your new password is " + studentDetails.getPassword()
 					+ ". \n Use this password to login in Placement Portal. \n");
-			return studentDetails;
+			return new ResponseEntity<String>("password reset success",HttpStatus.OK);
 		}
 		
 		public String generateRandomPassword() {
