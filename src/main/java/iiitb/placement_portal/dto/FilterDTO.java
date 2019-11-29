@@ -2,14 +2,14 @@ package iiitb.placement_portal.dto;
 
 
 public class FilterDTO {
-	private String company;
+	private Integer id;
 	private String year;
 	private String type;
-	public String getCompany() {
-		return company;
+	public Integer getCompany() {
+		return id;
 	}
-	public void setCompany(String company) {
-		this.company = company;
+	public void setCompany(Integer id) {
+		this.id = id;
 	}
 	public String getYear() {
 		return year;
