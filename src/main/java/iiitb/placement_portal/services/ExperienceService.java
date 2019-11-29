@@ -45,19 +45,26 @@ public class ExperienceService {
 	
 	public ArrayList<Experience> getExperiencesByFilters(FilterDTO filter)
 	{
-		ArrayList<Experience> experiences=new ArrayList<Experience>();
+		try {
+//		System.out.println(filter);
+		
+		//fetch all experiences
+		ArrayList<Experience> experiences=new ArrayList<>();
 		Iterable<Experience> iterable=experienceRepository.findAll();
 		Iterator<Experience> iterator=iterable.iterator();
 		while(iterator.hasNext()) {
 			experiences.add(iterator.next());
 		}
 		
+//		System.out.println(experiences);
+//		System.out.println("check for company filter");
 		ArrayList<Experience> expCompany=new ArrayList<>();
-		if(filter.getCompany()!=null)
+		if(filter.getCompanyId()!=null)
 		{
 			for(Integer i=0;i<experiences.size();i++)
 			{
-				if(filter.getCompany().equals(experiences.get(i).getCompany().getName()))
+//				System.out.println(filter.getCompanyId() + "   " + experiences.get(i).getCompany().getId());
+				if(filter.getCompanyId() == experiences.get(i).getCompany().getId())
 				{
 					expCompany.add(experiences.get(i));
 				}
@@ -67,15 +74,18 @@ public class ExperienceService {
 		{
 			expCompany=new ArrayList<Experience>(experiences);
 		}
-		ArrayList<Experience> expType=new ArrayList<Experience>();
+//		System.out.println("check for type filter");
+//		System.out.println(expCompany);
+//		System.out.println("check for type filter");
+		ArrayList<Experience> expType=new ArrayList<>();
 		if(filter.getType()!=null)
 		{
 			for(Integer i=0;i<expCompany.size();i++)
 			{
 				if(filter.getType().equals(expCompany.get(i).getType()))
 				{
-					System.out.println(filter.getType());
-					System.out.println(expCompany.get(i).getType());
+//					System.out.println(filter.getType());
+//					System.out.println(expCompany.get(i).getType());
 					expType.add(expCompany.get(i));
 				}
 			}
@@ -84,7 +94,10 @@ public class ExperienceService {
 		{
 			expType=new ArrayList<Experience>(expCompany);
 		}
-		ArrayList<Experience> expYear=new ArrayList<Experience>();
+		
+//		System.out.println(expType);
+//		System.out.println("check for year filter");
+		ArrayList<Experience> expYear=new ArrayList<>();
 		if(filter.getYear()!=null)
 		{
 			for(Integer i=0;i<expType.size();i++)
@@ -99,7 +112,14 @@ public class ExperienceService {
 		{
 			expYear=new ArrayList<Experience>(expType);
 		}
+		
+//		System.out.println(expYear);
 		return expYear;
+		
+		}catch(Exception e) {
+			System.out.println(e);
+			return null;
+		}
 	}
 
 	public Experience getExperienceById(Integer id) {
