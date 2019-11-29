@@ -163,6 +163,13 @@ public class CompanyService {
 		}
 		return true;
 	}
+
+	public boolean updateCompany(Company company){
+		Company dbCompany = companyRepository.findById(company.getId()).get();
+		company.setJd(dbCompany.getJd());
+		companyRepository.save(company);
+		return true;
+	}
 //	public boolean addFile(String rollNo,MultipartFile file, String extension, String type) {
 //		boolean res=true;
 //		if(file==null) {

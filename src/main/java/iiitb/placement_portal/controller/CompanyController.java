@@ -3,6 +3,7 @@ package iiitb.placement_portal.controller;
 import iiitb.placement_portal.dto.CompanyDTO;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.RequestEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -56,6 +57,17 @@ public class CompanyController {
 		}
 		else {
 			return new ResponseEntity<>("company remove failed",HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@RequestMapping(method=RequestMethod.POST,value="/updateCompany")
+	public ResponseEntity<String> updateCompany(@RequestBody Company company){
+		System.out.println(company);
+		if(companyService.updateCompany(company) == true){
+			return new ResponseEntity<>("company updated successfully", HttpStatus.OK);
+		}
+		else{
+			return new ResponseEntity<>("company updated successfully", HttpStatus.BAD_REQUEST);
 		}
 	}
 }
