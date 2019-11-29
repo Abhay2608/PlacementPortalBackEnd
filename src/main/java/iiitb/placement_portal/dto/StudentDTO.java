@@ -5,6 +5,23 @@ public class StudentDTO {
     private String email;
     private String rollNo;
     private String appliedFor;
+    private float cgpa;
+
+    public StudentDTO(String name, String email, String rollNo, String appliedFor, float cgpa) {
+        this.name = name;
+        this.email = email;
+        this.rollNo = rollNo;
+        this.appliedFor = appliedFor;
+        this.cgpa = cgpa;
+    }
+
+    public float getCgpa() {
+        return cgpa;
+    }
+
+    public void setCgpa(float cgpa) {
+        this.cgpa = cgpa;
+    }
 
     public StudentDTO(String name, String email, String rollNo, String appliedFor) {
         this.name = name;
