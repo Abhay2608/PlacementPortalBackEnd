@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 
 import iiitb.placement_portal.entity.Company;
 import iiitb.placement_portal.entity.Student;
+import iiitb.placement_portal.services.EMailService;
 import iiitb.placement_portal.services.StudentService;
 import org.apache.commons.io.FilenameUtils;
 
@@ -31,6 +32,8 @@ public class StudentController {
 		private StudentRepository studentRepository;
 		@Autowired
 		private CompanyRepository companyRepository;
+		@Autowired
+		private EMailService emailService;
 
 		@PostMapping(value="/register")
 		public ResponseEntity<String> registerStudent(@RequestBody Student student){
@@ -168,5 +171,34 @@ public class StudentController {
 		@RequestMapping(method=RequestMethod.GET,value = "/viewAppliedCompanies/{id}")
 		public ResponseEntity<ArrayList<CompanyDTO>> viewAppliedCompanies(@PathVariable("id")Integer id){
 			return new ResponseEntity<ArrayList<CompanyDTO>>(studentService.viewAppliedCompanies(id),HttpStatus.OK);
+		}
+
+		@RequestMapping(method=RequestMethod.GET,value="/resetPassword/{rollNo}")
+		public Student resetPassword(@PathVariable String rollNo) {
+			System.out.println("resetPassword method called");
+			Student studentDetails = studentService.getStudentByRollNo(rollNo);
+			if (studentDetails == null)
+				return null;
+			String secret = generateRandomPassword();
+			studentDetails.setPassword(secret);
+			studentDetails.setRollNo(rollNo);
+			studentService.updateStudentDetails(studentDetails);
+			emailService.sendEmail(studentDetails.getEmail(), 
+					"Your new Password for Placement Portal.", 
+					"Hello " + studentDetails.getName() 
+					+"\n We have recieved your request for resetting password."
+					+ "\n Your new password is " + studentDetails.getPassword()
+					+ ". \n Use this password to login in Placement Portal. \n");
+			return studentDetails;
+		}
+		
+		public String generateRandomPassword() {
+			String alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvxyz";
+			StringBuilder sb = new StringBuilder(8);
+			for(int i = 0; i < 8; i++) {
+				int index = (int) (alphabets.length() * Math.random());
+				sb.append(alphabets.charAt(index));
+			}
+			return sb.toString();
 		}
 }
