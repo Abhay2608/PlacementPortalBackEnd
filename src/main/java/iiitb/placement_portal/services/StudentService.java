@@ -348,4 +348,15 @@ public class StudentService {
 		}
 		return true;
 	}
+
+	public boolean withdrawApplication(Integer studentId,Integer companyId){
+		CompanyParticipation companyParticipation = companyParticipationRepository.findByStudentIdAndCompanyId(studentId, companyId);
+		if(companyParticipation != null) {
+			companyParticipationRepository.delete(companyParticipation);
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
 }

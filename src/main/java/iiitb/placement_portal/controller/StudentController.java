@@ -120,7 +120,17 @@ public class StudentController {
 				return new ResponseEntity<>("Company application failed",HttpStatus.BAD_REQUEST);
 			}
 		}
-		
+
+		@RequestMapping(method=RequestMethod.DELETE,value="/withdrawApplication")
+		public ResponseEntity<String> withdrawApplication(@RequestParam(value="studentId")Integer studentId,@RequestParam(value="companyId")Integer companyId){
+			if(studentService.withdrawApplication(studentId,companyId) == true){
+				return new ResponseEntity<>("Application withdrawn",HttpStatus.OK);
+			}
+			else{
+				return new ResponseEntity<>("Application withdraw failed",HttpStatus.BAD_REQUEST);
+			}
+		}
+
 		@RequestMapping(method = RequestMethod.POST,value="/uploadImage")
 		public ResponseEntity<String> addImage(@RequestParam("rollNo") String rollNo,@RequestParam("file") MultipartFile photo) {			
 			String extension = FilenameUtils.getExtension(photo.getOriginalFilename());

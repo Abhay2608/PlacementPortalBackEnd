@@ -10,4 +10,5 @@ public interface CompanyParticipationRepository extends CrudRepository<CompanyPa
     public ArrayList<CompanyParticipation> findAllByStudentId(Integer studentId);
     public ArrayList<CompanyParticipation> findAllByCompanyId(Integer companyId);
     public CompanyParticipation findByStudentIdAndCompanyId(Integer studentId,Integer companyId);
+    public CompanyParticipationRepository deleteByStudentIdAndCompanyId(Integer studentId,Integer companyId);
 }
