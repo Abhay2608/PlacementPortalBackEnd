@@ -1,17 +1,18 @@
 package iiitb.placement_portal.entity;
 
+import org.hibernate.validator.constraints.UniqueElements;
+
 import java.time.Year;
 import java.util.Date;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(uniqueConstraints={@UniqueConstraint(columnNames={"rollNo"})})
 public class Student {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
+	@Column(name = "rollNo")
 	private String rollNo;
 	private String email;
 	private String password;

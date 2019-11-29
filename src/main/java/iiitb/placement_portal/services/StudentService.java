@@ -53,7 +53,13 @@ public class StudentService {
 		boolean res=true;
 		try {
 			student.setBanned(false);
-			studentRepository.save(student);
+			Student dbStudent = studentRepository.findByRollNo(student.getRollNo());
+			if(dbStudent == null) {
+				studentRepository.save(student);
+			}
+			else{
+				res = false;
+			}
 		}catch(Exception e) {
 			res=false;
 			System.out.println(e);
