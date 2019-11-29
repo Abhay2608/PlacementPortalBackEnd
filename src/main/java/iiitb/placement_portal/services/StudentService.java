@@ -101,8 +101,9 @@ public class StudentService {
 		boolean res = false;
 		try {
 			Student stu = studentRepository.findByRollNo(student.getRollNo());
-			stu.setPassword(student.getPassword());
+			//stu.setPassword(student.getPassword());
 			studentRepository.save(stu);
+			res = true;
 		}
 		catch(Exception e) {
 			System.out.println(e);
