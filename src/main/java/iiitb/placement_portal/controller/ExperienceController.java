@@ -45,7 +45,7 @@ public class ExperienceController {
 	}
 	
 	@PostMapping("/getExperiencesByFilters")
-	public ResponseEntity<ArrayList<Experience>> addExperience(@RequestBody FilterDTO filter) {
+	public ResponseEntity<ArrayList<Experience>> getExperiencesByFilters(@RequestBody FilterDTO filter) {
 		return new ResponseEntity<>(experienceService.getExperiencesByFilters(filter),HttpStatus.OK);
 	}
 }
