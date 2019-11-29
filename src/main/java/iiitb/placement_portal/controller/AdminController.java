@@ -114,4 +114,14 @@ public class AdminController {
 	public ResponseEntity<ArrayList<Company>> getAllCompaniesAdmin(){
 		return new ResponseEntity<>(adminService.getAllCompaniesAdmin(),HttpStatus.OK);
 	}
+
+	@RequestMapping(method=RequestMethod.GET,value="/generateExcelSheet")
+	public ResponseEntity<String> generateExcelSheet(@RequestParam("companyId")Integer companyId){
+		if(adminService.generateExcelSheet(companyId) == true){
+			return new ResponseEntity<>("Excel Sheet generated successfully",HttpStatus.OK);
+		}
+		else{
+			return new ResponseEntity<>("Excel Sheet generation failed",HttpStatus.EXPECTATION_FAILED);
+		}
+	}
 }
